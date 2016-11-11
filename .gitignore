@@ -1,0 +1,8 @@
+/.vagrant
+/wagtaildemo/settings/local.py
+/static
+*.pyc
+/media
+/Vagrantfile.local
+*.sqlite3
+.DS_Store
