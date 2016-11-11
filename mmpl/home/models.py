@@ -5,10 +5,12 @@ from django.db import models
 from wagtail.wagtailcore.models import Page
 from wagtail.wagtailadmin.edit_handlers import FieldPanel, \
     PageChooserPanel
+from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
 from wagtail.wagtailsnippets.models import register_snippet
 
 
+# Abstract Link Class
 class LinkFields(models.Model):
     link_external = models.URLField("External link", blank=True)
     link_page = models.ForeignKey(
@@ -47,6 +49,7 @@ class HomePage(Page):
     pass
 
 
+# Social Snippet
 @register_snippet
 class Social(LinkFields):
     title = models.CharField(max_length=50, verbose_name="Social Site")
@@ -68,6 +71,7 @@ class Social(LinkFields):
         return self.title
 
 
+# Copyight Snippet
 @register_snippet
 class Copyright(models.Model):
     copyright = models.CharField(
@@ -89,6 +93,7 @@ class Copyright(models.Model):
         return self.copyright
 
 
+# Footer Snippet
 @register_snippet
 class AboutFooter(models.Model):
     title = models.CharField(
@@ -113,3 +118,33 @@ class AboutFooter(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+# Logo Snippet
+@register_snippet
+class Logo(models.Model):
+    description = models.CharField(
+        max_length=100,
+        verbose_name="Description"
+    )
+    page = models.ForeignKey(
+        'wagtailcore.Page',
+        related_name='logo',
+        null=True,
+        blank=True
+    )
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='image'
+    )
+
+    panels = [
+        FieldPanel('description', classname='full title'),
+        ImageChooserPanel('image')
+    ]
+
+    def __unicode__(self):
+        return self.description

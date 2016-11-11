@@ -1,0 +1,16 @@
+{% load static home_tags %}
+{% load  wagtailcore_tags wagtailimages_tags %}
+{% get_site_root as site_root %}
+
+<div class="site-logo">
+    {% if logos %}
+        {% for logo in logos %}
+            {% if forloop.first %}
+                {% image logo.image width-250 as img %}
+                <h1><a href="{% pageurl site_root %}"><img src="{{ img.url }}" alt="Logo"></a></h1>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h1><a href="{% pageurl site_root %}"><img src="{% static 'img/logo.jpg' %}" alt="Logo"></a></h1>
+    {% endif %}
+</div>
