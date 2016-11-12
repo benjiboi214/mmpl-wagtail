@@ -2,16 +2,19 @@ from __future__ import absolute_import, unicode_literals
 
 from django.db import models
 
-from wagtail.wagtailcore.models import Page
-from wagtail.wagtailadmin.edit_handlers import FieldPanel, \
-    PageChooserPanel
+from wagtail.wagtailcore.models import Page, Orderable
+from wagtail.wagtailadmin.edit_handlers import FieldPanel, MultiFieldPanel, \
+    InlinePanel, PageChooserPanel
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
 from wagtail.wagtailsnippets.models import register_snippet
 
+from modelcluster.fields import ParentalKey
+
 
 # Abstract Link Class
 class LinkFields(models.Model):
+    link_text = models.CharField(max_length=40, blank=True)
     link_external = models.URLField("External link", blank=True)
     link_page = models.ForeignKey(
         'wagtailcore.Page',
@@ -36,6 +39,7 @@ class LinkFields(models.Model):
             return self.link_external
 
     panels = [
+        FieldPanel('link_text'),
         FieldPanel('link_external'),
         PageChooserPanel('link_page'),
         DocumentChooserPanel('link_document'),
@@ -45,8 +49,43 @@ class LinkFields(models.Model):
         abstract = True
 
 
+# Carousel Abstract
+class CarouselItem(LinkFields):
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    title = models.CharField(max_length=25)
+    caption = models.CharField(max_length=255, blank=True)
+
+    panels = [
+        ImageChooserPanel('image'),
+        FieldPanel('title'),
+        FieldPanel('caption'),
+        MultiFieldPanel(LinkFields.panels, "Link"),
+    ]
+
+    class Meta:
+        abstract = True
+
+
+# Home Page Classes
+class HomePageCarouselItem(Orderable, CarouselItem):
+    page = ParentalKey('home.HomePage', related_name='carousel_items')
+
+
 class HomePage(Page):
-    pass
+    class Meta:
+        verbose_name = "Homepage"
+
+
+HomePage.content_panels = [
+    FieldPanel('title', classname='full title'),
+    InlinePanel('carousel_items', label="Carousel items")
+]
 
 
 # Social Snippet

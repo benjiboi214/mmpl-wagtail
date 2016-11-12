@@ -2,7 +2,9 @@
 
 {% block content %}
     {{ block.super }}
-    <h1>Welcome to your new Wagtail site!</h1>
+
+    {% include "home/includes/carousel.html" with carousel_items=self.carousel_items.all only %}
+
 
 
 {% endblock %}
