@@ -5,3 +5,5 @@ media/
 /Vagrantfile.local
 *.sqlite3
 .DS_Store
+high-level-source/
+theming-templates/
