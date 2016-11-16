@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 from django.db import models
 
 from wagtail.wagtailcore.models import Page, Orderable
+from wagtail.wagtailcore.fields import RichTextField
 from wagtail.wagtailadmin.edit_handlers import FieldPanel, MultiFieldPanel, \
     InlinePanel, PageChooserPanel
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
@@ -12,7 +13,7 @@ from wagtail.wagtailsnippets.models import register_snippet
 from modelcluster.fields import ParentalKey
 
 
-# Abstract Link Class
+# Link Abstract
 class LinkFields(models.Model):
     link_text = models.CharField(max_length=40, blank=True)
     link_external = models.URLField("External link", blank=True)
@@ -32,9 +33,9 @@ class LinkFields(models.Model):
     @property
     def link(self):
         if self.link_page:
-            return self.link_page.url
+            return self.link_page
         elif self.link_document:
-            return self.link_document.url
+            return self.link_document
         else:
             return self.link_external
 
@@ -72,20 +73,69 @@ class CarouselItem(LinkFields):
         abstract = True
 
 
+class HeroItem(LinkFields):
+    title = models.CharField(max_length=25, blank=True)
+    page = ParentalKey('home.HomePage', related_name='hero_items')
+    blurb = models.CharField("Blurb", max_length=255, blank=True)
+
+    panels = [
+        FieldPanel('title', classname='full'),
+        FieldPanel('blurb'),
+        MultiFieldPanel(LinkFields.panels, "Link"),
+    ]
+
+
 # Home Page Classes
 class HomePageCarouselItem(Orderable, CarouselItem):
     page = ParentalKey('home.HomePage', related_name='carousel_items')
 
 
 class HomePage(Page):
+    hero_item_title = models.CharField(max_length=25, blank=True)
+    hero_item_blurb = RichTextField(blank=True)
+
     class Meta:
         verbose_name = "Homepage"
 
 
 HomePage.content_panels = [
     FieldPanel('title', classname='full title'),
-    InlinePanel('carousel_items', label="Carousel items")
+    InlinePanel('carousel_items', label="Carousel items"),
+    MultiFieldPanel(
+        [
+            FieldPanel('hero_item_title'),
+            FieldPanel('hero_item_blurb'),
+            InlinePanel(
+                'hero_items',
+                label="Hero Items",
+                max_num=3
+            ),
+        ],
+        heading="Home Page Hero Items",
+        classname="collapsible"
+    ),
 ]
+
+
+class BlogIndexPage(Page):
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    content_panels = [
+        FieldPanel('title', classname='full title'),
+        ImageChooserPanel('image'),
+    ]
+
+
+class BlogPage(Page):
+    panels = [
+        FieldPanel('title', classname='full title')
+    ]
 
 
 # Social Snippet

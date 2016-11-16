@@ -1,0 +1,15 @@
+{% load wagtailimages_tags %}
+
+<div class="col-md-3 col-sm-6">
+    <div class="featured-block">
+        <figure>
+          <a href="{{ hero_item.link }}">
+              {% image blog_index.image fill-230x150 as img %}
+                  <img src="{{ img.url }}" alt="Learn">
+                  <span class="caption">{{ hero_item.title }}</span>
+          </a>
+        </figure>
+        <p>{{ hero_item.blurb }}</p>
+        <a href="{{ hero_item.link }}" class="basic-link">{{ hero_item.link_text }}</a>
+    </div>
+</div>

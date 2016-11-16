@@ -1,15 +1,40 @@
 from django import template
 
-from home.models import Social, Copyright, AboutFooter, Logo
+from home.models import Social, Copyright, AboutFooter, Logo, HeroItem, \
+    BlogIndexPage
 
 register = template.Library()
 
 
+# Site wide get root method
 @register.assignment_tag(takes_context=True)
 def get_site_root(context):
     # NB this returns a core.Page, not the implementation-specific model used
     # so object-comparison to self will return false as objects would differ
     return context['request'].site.root_page
+
+
+# Hero area get include title, blurb and hero items
+@register.inclusion_tag('home/tags/hero_area.html', takes_context=True)
+def hero_area(context):
+    self = context.get('self')  # Should be onstance of home page.
+    hero_items = HeroItem.objects.filter(page=self)
+    return {
+        'self': self,
+        'hero_items': hero_items,
+        'request': context['request'],
+    }
+
+
+# Hero area get include title, blurb and hero items
+@register.inclusion_tag('home/tags/hero_item.html', takes_context=True)
+def hero_item(context, item):
+    self = context.get('self')  # Should be onstance of home page.
+    return {
+        'blog_index': item.link.specific,
+        'hero_item': item,
+        'request': context['request'],
+    }
 
 
 # Social Snippet
