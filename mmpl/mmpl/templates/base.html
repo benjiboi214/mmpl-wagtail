@@ -40,7 +40,7 @@
     {% endblock %}
 </head>
 
-    <body class="home header-style1">
+    <body class="{% block body_class %}header-style1{% endblock %}">
         {% wagtailuserbar %}
 
         <div class="body">

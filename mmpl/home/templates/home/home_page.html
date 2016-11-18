@@ -2,6 +2,8 @@
 
 {% load home_tags %}
 
+{% block body_class %}{{ block.super }} home{% endblock %}
+
 {% block content %}
     {{ block.super }}
 
