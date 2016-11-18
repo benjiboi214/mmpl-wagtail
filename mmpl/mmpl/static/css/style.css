@@ -3,7 +3,7 @@
 Project:	AutoStars
 Version:	1.1
 Last change:	02/17/15
-Author:	imithemes 
+Author:	imithemes
 -------------------------------------------------------------------*/
 /* Stylesheets and Google fonts import */
 @import url("font-awesome.css");
@@ -76,8 +76,8 @@ html, body {
 
 html, hmtl a{
 	width:100%;
-	font-size: 100%; 
-	-webkit-text-size-adjust: 100%; 
+	font-size: 100%;
+	-webkit-text-size-adjust: 100%;
 	-ms-text-size-adjust: 100%;
 }
 a{
@@ -101,7 +101,7 @@ a img {
 	border: none;
 }
 a > img {
-	vertical-align: middle;	
+	vertical-align: middle;
 }
 .gray-bg{
 	background:#CDCBCB;
@@ -116,7 +116,7 @@ a > img {
 	background:#454545;
 }
 img {
-	max-width: 100%;	
+	max-width: 100%;
 }
 img, object, embed, audio, video {
 	max-width: 100%;
@@ -151,7 +151,7 @@ i, em, .italic{
 	text-align: center;
 }
 .text-align-right {
-	text-align: right;	
+	text-align: right;
 }
 .color-text {
     color: #ffffff;
@@ -169,15 +169,15 @@ i, em, .italic{
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: #999;  
+   color: #999;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: #999;  
+   color: #999;
 }
 
-:-ms-input-placeholder {  
-   color: #999;  
+:-ms-input-placeholder {
+   color: #999;
 }
 iframe{
 	border:0;
@@ -926,10 +926,10 @@ p.meta-data{
 	visibility: hidden;
 	line-height: 0;
 	height: 0;
-} 
+}
 html[xmlns] .slides {
 	display: block;
-} 
+}
 * html .slides {
 	height: 1%;
 }
@@ -937,7 +937,7 @@ html[xmlns] .slides {
 	zoom: 1;
 	margin:0;
 	list-style-type:none;
-}  
+}
 .hero-slider{
 	position:relative;
 	z-index:1;
@@ -1706,7 +1706,6 @@ body.boxed .body{
 	top:-45px;
 	margin-bottom:-45px;
 	z-index:2;
-	background:#ccc;
 	min-height:200px;
 }
 .header-style2 .hero-area, .header-style3 .hero-area{
@@ -3067,13 +3066,13 @@ ul.slot-exhibitions li h5{
 /* Pricing Tables
 /*-------------------------------------------------------------------------------------------*/
 .pricing-table {
-	margin-top: 50px;	
+	margin-top: 50px;
 	margin-bottom: 50px;
 }
-.pricing-table:after { 
-	display: block; 
-	visibility: hidden; 
-	clear: both; 
+.pricing-table:after {
+	display: block;
+	visibility: hidden;
+	clear: both;
 	height: 0;
 	content: "";
 }
@@ -3164,7 +3163,7 @@ ul.slot-exhibitions li h5{
 .pricing-column h4 {
 	margin-bottom: 0px;
 	margin-left: -22px;
-	padding: 20px 30px 6px 30px;	
+	padding: 20px 30px 6px 30px;
 	color: #333333;
 	font-size: 54px!important;
 	line-height: 42px!important;
@@ -3214,7 +3213,7 @@ ul.slot-exhibitions li h5{
 	p.lead{
 		line-height:2em;
 	}
-	
+
 }
 @media (min-width: 992px) and (max-width: 1199px) {
 	.dd-menu .megamenu-container ul{
@@ -3522,5 +3521,5 @@ ul.slot-exhibitions li h5{
 @media only screen and (min-width: 480px) and (max-width: 767px) {
 }
 @media all and (-webkit-min-device-pixel-ratio: 1.5) {
-	
+
 }
