@@ -1,7 +1,7 @@
 from django import template
 
 from home.models import Social, Copyright, AboutFooter, Logo, HeroItem, \
-    BlogIndexPage
+    Page
 
 register = template.Library()
 
@@ -33,6 +33,23 @@ def hero_item(context, item):
     return {
         'blog_index': item.link.specific,
         'hero_item': item,
+        'request': context['request'],
+    }
+
+
+# Breadcrumb tag
+@register.inclusion_tag('home/tags/breadcrumbs.html', takes_context=True)
+def breadcrumbs(context):
+    self = context.get('self')
+    if self is None or self.depth <= 2:
+        # When on the home page, displaying breadcrumbs is irrelevant.
+        ancestors = ()
+    else:
+        ancestors = Page.objects.ancestor_of(
+            self, inclusive=True).filter(depth__gt=1)
+    print ancestors
+    return {
+        'ancestors': ancestors,
         'request': context['request'],
     }
 
