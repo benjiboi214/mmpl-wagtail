@@ -51,6 +51,16 @@ def blog_hero_item(context):
     }
 
 
+@register.inclusion_tag('home/tags/blog_page_media_item.html', takes_context=True)
+def blog_page_media_item(context):
+    self = context.get('self')
+    media_item = None
+    return {
+        'media_item': media_item,
+        'request': context['request'],
+    }
+
+
 # Breadcrumb tag
 @register.inclusion_tag('home/tags/breadcrumbs.html', takes_context=True)
 def breadcrumbs(context):
