@@ -1,0 +1,8 @@
+{% load wagtailimages_tags %}
+
+<div class="hero-area">
+    {% image blog_index.image fill-1400x400-c50 as img %}
+    <div class="page-header" style="background-image: url({{ img.url }}")>
+        <div><div><span>{{ blog_index.title }}</span></div></div>
+    </div>
+</div>

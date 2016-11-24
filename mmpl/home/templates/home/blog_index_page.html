@@ -5,12 +5,8 @@
 
 {% block content %}
     {{ block.super }}
-    <div class="hero-area">
-        {% image self.image fill-1400x400-c50 as img %}
-        <div class="page-header" style="background-image: url({{ img.url }}")>
-            <div><div><span>Classic Blog</span></div></div>
-        </div>
-    </div>
+
+    {% blog_hero_item %}
 
     <!-- Breadcrumbs -->
     {% breadcrumbs %}

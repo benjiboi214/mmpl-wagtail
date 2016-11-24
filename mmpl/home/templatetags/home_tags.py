@@ -37,6 +37,20 @@ def hero_item(context, item):
     }
 
 
+# Blog hero area, to display the blog index image and title
+@register.inclusion_tag('home/tags/blog_hero_item.html', takes_context=True)
+def blog_hero_item(context):
+    self = context.get('self')
+    if self.content_type.model == 'blogindexpage':
+        blog_index = self
+    elif self.content_type.model == 'blogpage':
+        blog_index = self.get_parent().specific
+    return {
+        'blog_index': blog_index,
+        'request': context['request'],
+    }
+
+
 # Breadcrumb tag
 @register.inclusion_tag('home/tags/breadcrumbs.html', takes_context=True)
 def breadcrumbs(context):
@@ -47,7 +61,6 @@ def breadcrumbs(context):
     else:
         ancestors = Page.objects.ancestor_of(
             self, inclusive=True).filter(depth__gt=1)
-    print ancestors
     return {
         'ancestors': ancestors,
         'request': context['request'],
