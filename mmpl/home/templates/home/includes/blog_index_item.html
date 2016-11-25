@@ -1,4 +1,5 @@
 {% load home_tags %}
+{% load wagtailcore_tags %}
 
 <div class="list-item blog-list-item format-standard">
     <div class="row">
@@ -6,16 +7,17 @@
             {% blog_index_media_item blog=blog %}
         </div>
         <div class="col-md-8 col-sm-8">
-            <h3><a href="blog-single.html">Standard Post Format</a></h3>
+            <h3><a href="blog-single.html">{{ blog.title }}</a></h3>
             <div class="meta-data alt">
-              <div><i class="fa fa-clock-o"></i> April 20, 2015</div>
-              <div><i class="fa fa-archive"></i> <a href="#">Conservation</a>, <a href="#">Exhibitions</a></div>
+              <div><i class="fa fa-clock-o"></i> {{ blog.date }}</div>
             </div>
             <div class="list-item-excerpt">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus. Donec facilisis fermentum sem...</p>
+                {% for intro in blog.intro %}
+                    <p>{{ intro }}</p>
+                {% endfor %}
             </div>
             <div class="post-actions">
-                <a href="blog-single.html" class="btn btn-primary">Continue reading</a>
+                <a href="{% pageurl blog %}" class="btn btn-primary">Continue reading</a>
             </div>
         </div>
     </div>

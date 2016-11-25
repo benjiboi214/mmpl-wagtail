@@ -198,6 +198,13 @@ class BlogPage(Page):
         # Find closest ancestor which is a blog index
         return self.get_ancestors().type(BlogIndexPage).last()
 
+    @property
+    def intro(self):
+        intro = []
+        for block in self.body:
+            if block.block_type == 'intro':
+                intro.append(block)
+        return intro
 
 BlogPage.content_panels = [
     FieldPanel('title', classname='full title'),
