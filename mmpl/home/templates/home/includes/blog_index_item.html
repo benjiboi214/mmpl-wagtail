@@ -3,22 +3,8 @@
 
 <div class="list-item blog-list-item format-standard">
     <div class="row">
-        <div class="col-md-4 col-sm-4">
-            {% blog_index_media_item blog=blog %}
-        </div>
-        <div class="col-md-8 col-sm-8">
-            <h3><a href="blog-single.html">{{ blog.title }}</a></h3>
-            <div class="meta-data alt">
-              <div><i class="fa fa-clock-o"></i> {{ blog.date }}</div>
-            </div>
-            <div class="list-item-excerpt">
-                {% for intro in blog.intro %}
-                    <p>{{ intro }}</p>
-                {% endfor %}
-            </div>
-            <div class="post-actions">
-                <a href="{% pageurl blog %}" class="btn btn-primary">Continue reading</a>
-            </div>
-        </div>
+
+        {% blog_index_media_item blog=blog %}
+
     </div>
 </div>

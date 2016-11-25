@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from django.db import models
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django import forms
 
 from wagtail.wagtailcore.models import Page, Orderable
@@ -241,6 +242,25 @@ class BlogIndexPage(Page):
         # Order by most recent date first
         blogs = blogs.order_by('-date')
         return blogs
+
+    def get_context(self, request):
+        # Get blogs
+        blogs = self.blogs
+
+        # Pagination
+        page = request.GET.get('page')
+        paginator = Paginator(blogs, 1)  # Show 10 blogs per page
+        try:
+            blogs = paginator.page(page)
+        except PageNotAnInteger:
+            blogs = paginator.page(1)
+        except EmptyPage:
+            blogs = paginator.page(paginator.num_pages)
+
+        # Update template context
+        context = super(BlogIndexPage, self).get_context(request)
+        context['blogs'] = blogs
+        return context
 
     content_panels = [
         FieldPanel('title', classname='full title'),

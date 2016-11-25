@@ -1,24 +1,41 @@
-{% load wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% if media_item %}
-    {% if media_item.link_external %}
-        {% if "youtube" in supported_sites %}
+    <div class="col-md-4 col-sm-4">
+        {% if media_item.link_external %}
+            {% if "youtube" in supported_sites %}
+                <div class="post-media">
+                    <iframe width="560" height="315" src="{{ media_item.link_external }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+            {% elif "soundcloud" in supported_sites %}
+                <div class="post-media">
+                    <iframe width="100%" height="170" scrolling="no" frameborder="no" src="{{ media_item.link_external }}"></iframe>
+                </div>
+            {% elif "vimeo" in supported_sites %}
+                <div class="post-media">
+                    <iframe src="{{ media_item.link_external }}" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                </div>
+            {% endif %}
+        {% elif media_item.image %}
             <div class="post-media">
-                <iframe width="560" height="315" src="{{ media_item.link_external }}" frameborder="0" allowfullscreen></iframe>
-            </div>
-        {% elif "soundcloud" in supported_sites %}
-            <div class="post-media">
-                <iframe width="100%" height="170" scrolling="no" frameborder="no" src="{{ media_item.link_external }}"></iframe>
-            </div>
-        {% elif "vimeo" in supported_sites %}
-            <div class="post-media">
-                <iframe src="{{ media_item.link_external }}" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                  {% image media_item.image max-600x500 as img %}
+                  <a href="blog-single.html" class="img-thumbnail"><img src="{{ img.url }}" alt="" class="post-thumb"></a>
             </div>
         {% endif %}
-    {% elif media_item.image %}
-        <div class="post-media">
-              {% image media_item.image max-600x500 as img %}
-              <a href="blog-single.html" class="img-thumbnail"><img src="{{ img.url }}" alt="" class="post-thumb"></a>
-        </div>
-    {% endif %}
+    </div>
 {% endif %}
+
+<div class="{% if media_item %}col-md-8 col-sm-8{% else %}col-md-12 col-sm-12{% endif %}">
+    <h3><a href="blog-single.html">{{ blog.title }}</a></h3>
+    <div class="meta-data alt">
+      <div><i class="fa fa-clock-o"></i> {{ blog.date }}</div>
+    </div>
+    <div class="list-item-excerpt">
+        {% for intro in blog.intro %}
+            <p>{{ intro }}</p>
+        {% endfor %}
+    </div>
+    <div class="post-actions">
+        <a href="{% pageurl blog %}" class="btn btn-primary">Continue reading</a>
+    </div>
+</div>

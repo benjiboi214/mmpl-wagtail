@@ -1,4 +1,5 @@
 from django import template
+from django.core.exceptions import ObjectDoesNotExist
 
 from home.models import Social, Copyright, AboutFooter, Logo, HeroItem, \
     Page, BlogPageMediaItem
@@ -64,19 +65,23 @@ def blog_page_media_item(context):
 @register.inclusion_tag('home/tags/blog_index_media_item.html', takes_context=True)
 def blog_index_media_item(context, blog):
     self = context.get('self')
-    media_item = BlogPageMediaItem.objects.get(page=blog)
-    if media_item.link_external:
-        url_split = media_item.link_external.split('.')
-        supported_sites = []
-        if 'youtube' in url_split:
-            supported_sites.append('youtube')
-        elif 'soundcloud' in url_split:
-            supported_sites.append('soundcloud')
-        elif 'vimeo' in url_split:
-            supported_sites.append('vimeo')
-    else:
-        supported_sites = None
+    try:
+        media_item = BlogPageMediaItem.objects.get(page=blog)
+    except ObjectDoesNotExist:
+        media_item = None
+    supported_sites = None
+    if media_item:
+        if media_item.link_external:
+            url_split = media_item.link_external.split('.')
+            supported_sites = []
+            if 'youtube' in url_split:
+                supported_sites.append('youtube')
+            elif 'soundcloud' in url_split:
+                supported_sites.append('soundcloud')
+            elif 'vimeo' in url_split:
+                supported_sites.append('vimeo')
     return {
+        'blog': blog,
         'media_item': media_item,
         'supported_sites': supported_sites,
         'request': context['request'],
