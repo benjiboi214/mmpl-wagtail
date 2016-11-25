@@ -222,6 +222,7 @@ BlogPage.content_panels = [
         label="Media Item",
         max_num=1,
         help_text="""
+        Always get the URL from the 'src' section of the 'embed' option.
         Used for populating the blog index media items, and blog page media
         items. Will try to populate external links first, then image and
         finally ignore and fill space.

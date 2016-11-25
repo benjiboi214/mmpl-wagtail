@@ -1,1 +1,16 @@
-<div class="featured-image"> <img src="http://placehold.it/1400x600&amp;text=IMAGE+PLACEHOLDER" alt=""> </div>
+{% load wagtailimages_tags %}
+
+{% if media_item %}
+    {% if media_item.link_external %}
+        <div class="featured-image">
+            <div class="video-container">
+                <iframe width="80%" max-width="600" src="{{ media_item.link_external }}"></iframe>
+            </div>
+        </div>
+    {% elif media_item.image %}
+        <div class="featured-image">
+            {% image media_item.image max-1400x600 as img %}
+            <img src="{{ img.url }}" />
+        </div>
+    {% endif %}
+{% endif %}

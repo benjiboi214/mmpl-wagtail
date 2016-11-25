@@ -1,7 +1,7 @@
 from django import template
 
 from home.models import Social, Copyright, AboutFooter, Logo, HeroItem, \
-    Page
+    Page, BlogPageMediaItem
 
 register = template.Library()
 
@@ -54,7 +54,7 @@ def blog_hero_item(context):
 @register.inclusion_tag('home/tags/blog_page_media_item.html', takes_context=True)
 def blog_page_media_item(context):
     self = context.get('self')
-    media_item = None
+    media_item = BlogPageMediaItem.objects.get(page=self)
     return {
         'media_item': media_item,
         'request': context['request'],
