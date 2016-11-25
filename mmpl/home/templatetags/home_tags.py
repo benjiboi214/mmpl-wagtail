@@ -61,6 +61,28 @@ def blog_page_media_item(context):
     }
 
 
+@register.inclusion_tag('home/tags/blog_index_media_item.html', takes_context=True)
+def blog_index_media_item(context, blog):
+    self = context.get('self')
+    media_item = BlogPageMediaItem.objects.get(page=blog)
+    if media_item.link_external:
+        url_split = media_item.link_external.split('.')
+        supported_sites = []
+        if 'youtube' in url_split:
+            supported_sites.append('youtube')
+        elif 'soundcloud' in url_split:
+            supported_sites.append('soundcloud')
+        elif 'vimeo' in url_split:
+            supported_sites.append('vimeo')
+    else:
+        supported_sites = None
+    return {
+        'media_item': media_item,
+        'supported_sites': supported_sites,
+        'request': context['request'],
+    }
+
+
 # Breadcrumb tag
 @register.inclusion_tag('home/tags/breadcrumbs.html', takes_context=True)
 def breadcrumbs(context):

@@ -1,7 +1,7 @@
 {% extends "home/base.html" %}
 
 {% load home_tags %}
-{% load wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
     {{ block.super }}
@@ -20,30 +20,11 @@
                         <div class="posts-listing">
 
                             <!-- List Item -->
-                            <div class="list-item blog-list-item format-standard">
-                                <div class="row">
-                                    <div class="col-md-4 col-sm-4">
-                                        <div class="post-media">
-                                            <a href="blog-single.html" class="img-thumbnail"><img src="http://placehold.it/600x500&amp;text=IMAGE+PLACEHOLDER" alt="" class="post-thumb"></a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8 col-sm-8">
-                                        <h3><a href="blog-single.html">Standard Post Format</a></h3>
-                                        <div class="meta-data alt">
-                                          <div><i class="fa fa-clock-o"></i> April 20, 2015</div>
-                                          <div><i class="fa fa-archive"></i> <a href="#">Conservation</a>, <a href="#">Exhibitions</a></div>
-                                        </div>
-                                        <div class="list-item-excerpt">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus. Donec facilisis fermentum sem...</p>
-                                        </div>
-                                        <div class="post-actions">
-                                            <a href="blog-single.html" class="btn btn-primary">Continue reading</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% for blog in self.blogs %}
+                                {% include "home/includes/blog_index_item.html" %}
+                            {% endfor %}
+                            <!--
 
-                            <!-- List Item -->
                             <div class="list-item blog-list-item format-audio">
                                 <div class="row">
                                     <div class="col-md-4 col-sm-4">
@@ -67,7 +48,8 @@
                                 </div>
                             </div>
 
-                            <!-- List Item -->
+
+
                             <div class="list-item blog-list-item format-video">
                                 <div class="row">
                                     <div class="col-md-4 col-sm-4">
@@ -91,7 +73,8 @@
                                 </div>
                             </div>
 
-                            <!-- List Item -->
+
+
                             <div class="list-item blog-list-item format-gallery">
                                 <div class="row">
                                     <div class="col-md-4 col-sm-4">
@@ -120,7 +103,8 @@
                                 </div>
                             </div>
 
-                            <!-- List Item -->
+
+
                             <div class="list-item blog-list-item format-video">
                                 <div class="row">
                                     <div class="col-md-4 col-sm-4">
@@ -143,7 +127,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                          -->
                         </div>
 
                         <ul class="pagination">

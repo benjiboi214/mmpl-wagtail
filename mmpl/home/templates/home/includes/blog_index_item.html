@@ -1,0 +1,22 @@
+{% load home_tags %}
+
+<div class="list-item blog-list-item format-standard">
+    <div class="row">
+        <div class="col-md-4 col-sm-4">
+            {% blog_index_media_item blog=blog %}
+        </div>
+        <div class="col-md-8 col-sm-8">
+            <h3><a href="blog-single.html">Standard Post Format</a></h3>
+            <div class="meta-data alt">
+              <div><i class="fa fa-clock-o"></i> April 20, 2015</div>
+              <div><i class="fa fa-archive"></i> <a href="#">Conservation</a>, <a href="#">Exhibitions</a></div>
+            </div>
+            <div class="list-item-excerpt">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus. Donec facilisis fermentum sem...</p>
+            </div>
+            <div class="post-actions">
+                <a href="blog-single.html" class="btn btn-primary">Continue reading</a>
+            </div>
+        </div>
+    </div>
+</div>

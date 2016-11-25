@@ -173,21 +173,6 @@ HomePage.content_panels = [
 ]
 
 
-class BlogIndexPage(Page):
-    image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
-
-    content_panels = [
-        FieldPanel('title', classname='full title'),
-        ImageChooserPanel('image'),
-    ]
-
-
 class BlogPageMediaItem(LinkFields):
     page = ParentalKey('home.BlogPage', related_name='media_item')
     image = models.ForeignKey(
@@ -230,6 +215,30 @@ BlogPage.content_panels = [
     ),
     StreamFieldPanel('body')
 ]
+
+
+class BlogIndexPage(Page):
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    @property
+    def blogs(self):
+        # Get list of live blog pages that are descendants of this page
+        blogs = BlogPage.objects.live().descendant_of(self)
+
+        # Order by most recent date first
+        blogs = blogs.order_by('-date')
+        return blogs
+
+    content_panels = [
+        FieldPanel('title', classname='full title'),
+        ImageChooserPanel('image'),
+    ]
 
 
 # Social Snippet
