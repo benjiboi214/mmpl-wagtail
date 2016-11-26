@@ -1,0 +1,40 @@
+{% extends "home/base.html" %}
+
+{% load home_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+    {{ block.super }}
+
+    {% blog_hero_item %}
+
+    <!-- Breadcrumbs -->
+    {% breadcrumbs %}
+
+    <!-- Start Body Content -->
+    <div class="main" role="main">
+      <div id="content" class="content full">
+            <div class="container">
+              <div class="row">
+                    <div class="col-md-8">
+
+                        <div class="posts-listing">
+                            <!-- List Item -->
+                            {% for blog in paginator %}
+                                {% include "home/includes/blog_index_item.html" %}
+                            {% endfor %}
+                        </div>
+
+                        {% pagination %}
+
+                    </div>
+
+                    <div class="col-md-4 sidebar right-sidebar">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

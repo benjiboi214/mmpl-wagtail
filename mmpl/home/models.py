@@ -249,7 +249,7 @@ class BlogIndexPage(Page):
 
         # Pagination
         page = request.GET.get('page')
-        paginator = Paginator(blogs, 1)  # Show 10 blogs per page
+        paginator = Paginator(blogs, 2)  # Show 10 blogs per page
         try:
             blogs = paginator.page(page)
         except PageNotAnInteger:
@@ -259,7 +259,7 @@ class BlogIndexPage(Page):
 
         # Update template context
         context = super(BlogIndexPage, self).get_context(request)
-        context['blogs'] = blogs
+        context['paginator'] = blogs
         return context
 
     content_panels = [

@@ -104,6 +104,20 @@ def breadcrumbs(context):
     }
 
 
+@register.inclusion_tag('home/tags/pagination.html', takes_context=True)
+def pagination(context):
+    paginator = context['paginator']
+    render_nums = []
+    for num in range(1, paginator.paginator.num_pages + 1):
+        if -1 <= paginator.number - num <= 1:
+            render_nums.append(num)
+    return {
+        'paginator': paginator,
+        'pages': render_nums,
+        'request': context['request'],
+    }
+
+
 # Social Snippet
 @register.inclusion_tag('home/tags/base/social.html', takes_context=True)
 def social(context):
