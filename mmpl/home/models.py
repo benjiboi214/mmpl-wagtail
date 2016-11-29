@@ -18,6 +18,7 @@ from wagtail.wagtailimages.blocks import ImageChooserBlock
 from wagtail.wagtaildocs.blocks import DocumentChooserBlock
 
 from modelcluster.fields import ParentalKey
+from wagtailmenus.models import MenuPage
 
 
 # Global Streamfield Definitions
@@ -147,7 +148,7 @@ class HomePageCarouselItem(Orderable, CarouselItem):
     page = ParentalKey('home.HomePage', related_name='carousel_items')
 
 
-class HomePage(Page):
+class HomePage(MenuPage):
     hero_item_title = models.CharField(max_length=25, blank=True)
     hero_item_blurb = RichTextField(blank=True)
 
@@ -225,7 +226,7 @@ BlogPage.content_panels = [
 ]
 
 
-class BlogIndexPage(Page):
+class BlogIndexPage(MenuPage):
     image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
