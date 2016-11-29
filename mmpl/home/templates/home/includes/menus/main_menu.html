@@ -1,0 +1,111 @@
+{% load menu_tags %}
+
+<nav class="main-navigation dd-menu toggle-menu" role="navigation">
+
+<ul class="sf-menu">
+{% for item in menu_items %}
+    <li>
+        <a href="{{ item.href }}">{{ item.text }}</a>
+        {% if item.has_children_in_menu %}
+        	{% sub_menu item template='home/includes/menus/sub_menu.html' %}
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
+
+</nav>
+
+
+
+<!--<nav class="main-navigation dd-menu toggle-menu" role="navigation">
+    <ul class="sf-menu">
+        <li><a href="index.html">Home</a>
+            <ul class="dropdown">
+                <li><a href="index.html">Header Styles</a>
+                    <ul class="dropdown">
+                        <li><a href="index.html">Style 1 (Default)</a></li>
+                        <li><a href="index-header-style2.html">Style 2</a></li>
+                        <li><a href="index-header-style3.html">Style 3</a></li>
+                    </ul>
+              </li>
+                <li><a href="index-header-style2.html">Slider Styles</a>
+                    <ul class="dropdown">
+                        <li><a href="index.html">Slider Revolution</a></li>
+                        <li><a href="index-flexslider.html">FlexSlider</a></li>
+                        <li><a href="index-nivoslider.html">NivoSlider</a></li>
+                    </ul>
+              </li>
+            </ul>
+        </li>
+        <li><a href="about.html">About</a>
+            <ul class="dropdown">
+                <li><a href="about.html">Overview</a></li>
+                <li><a href="internship.html">Internship</a></li>
+                <li><a href="rentals.html">Rentals</a></li>
+                <li><a href="donate.html">Donate</a></li>
+            <li><a href="membership.html">Membership</a></li>
+            </ul>
+        </li>
+    <li class="megamenu"><a href="shortcodes.html">Mega Menu</a>
+        <ul class="dropdown">
+          <li>
+              <div class="megamenu-container container">
+                <div class="row">
+                    <div class="col-md-4"> <span class="megamenu-sub-title">All Exhibitions</span>
+                      <ul class="sub-menu">
+                                    <li><a href="exhibitions-grid.html">Exhibitions Grid</a></li>
+                                    <li><a href="exhibitions-list.html">Exhibitions List</a></li>
+                                    <li><a href="exhibitions-timetable.html">Exhibitions Timetable</a></li>
+                                    <li><a href="exhibition-single.html">Single Exhibition</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-md-4"> <span class="megamenu-sub-title">Our Venues</span>
+                      <ul class="sub-menu">
+                          <li><a href="venues-grid.html">Venues Grid</a></li>
+                          <li><a href="venues-list.html">Venues List</a></li>
+                          <li><a href="venue-single.html">Single Venue</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-md-4"> <span class="megamenu-sub-title">Features</span>
+                      <ul class="sub-menu">
+                          <li><a href="shortcodes.html">Shortcodes</a></li>
+                          <li><a href="typography.html">Typography</a></li>
+                      </ul>
+                    </div>
+                </div>
+              </div>
+          </li>
+        </ul>
+    </li>
+        <li><a href="events-list.html">Events</a>
+            <ul class="dropdown">
+                <li><a href="events-list.html">Events List</a></li>
+                <li><a href="events-grid.html">Events Grid</a></li>
+                <li><a href="events-calendar.html">Events Calendar</a></li>
+                <li><a href="event-single.html">Single Event</a></li>
+            </ul>
+      </li>
+        <li><a href="artworks-list.html">Artworks</a>
+            <ul class="dropdown">
+                <li><a href="artworks-list.html">Artworks List</a></li>
+                <li><a href="artworks-grid.html">Artworks Grid</a></li>
+                <li><a href="artwork-single.html">Single Artwork</a></li>
+            </ul>
+      </li>
+        <li><a href="gallery-3cols.html">Gallery</a>
+            <ul class="dropdown">
+                <li><a href="gallery-2cols.html">2 Columns</a></li>
+                <li><a href="gallery-3cols.html">3 Columns</a></li>
+                <li><a href="gallery-4cols.html">4 Columns</a></li>
+            </ul>
+        </li>
+        <li><a href="blog-classic.html">Blog</a>
+            <ul class="dropdown">
+                <li><a href="blog-classic.html">Blog Classic</a></li>
+                <li><a href="blog-grid.html">Blog Grid</a></li>
+                <li><a href="blog-single.html">Single Post</a></li>
+            </ul>
+        </li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>-->
