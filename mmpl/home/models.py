@@ -1,5 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
+from collections import OrderedDict
+
 from django.db import models
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django import forms
@@ -7,10 +9,13 @@ from django import forms
 from wagtail.wagtailcore.models import Page, Orderable
 from wagtail.wagtailcore.fields import RichTextField, StreamField
 from wagtail.wagtailadmin.edit_handlers import FieldPanel, MultiFieldPanel, \
-    InlinePanel, PageChooserPanel, StreamFieldPanel
+    InlinePanel, PageChooserPanel, StreamFieldPanel, FieldRowPanel
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
 from wagtail.wagtailsnippets.models import register_snippet
+from wagtail.wagtailforms.models import AbstractEmailForm, AbstractFormField
+from wagtail.wagtailforms.forms import FormBuilder
+
 
 from wagtail.wagtailcore.blocks import TextBlock, StructBlock, StreamBlock, \
     FieldBlock, CharBlock, RichTextBlock, RawHTMLBlock
@@ -266,6 +271,58 @@ class BlogIndexPage(MenuPage):
     content_panels = [
         FieldPanel('title', classname='full title'),
         ImageChooserPanel('image'),
+    ]
+
+# Abstract for adding CSS and Placeholder attrs to widget
+class CustomFormBuilder(FormBuilder):
+    @property
+    def formfields(self):
+        formfields = OrderedDict()
+
+        for field in self.fields:
+            options = self.get_field_options(field)
+
+            if field.field_type in self.FIELD_TYPES:
+                # import pdb; pdb.set_trace()
+                formfields[field.clean_name] = self.FIELD_TYPES[field.field_type](self, field, options)
+            else:
+                raise Exception("Unrecognised field type: " + field.field_type)
+            if hasattr(formfields[field.clean_name], 'widget'):
+                widget = formfields[field.clean_name].widget
+                large_widgets = ['multiline', 'radio', 'checkboxes']
+                if field.field_type in large_widgets:
+                    widget.large = True
+                else:
+                    widget.large = False
+                cls_attrs = 'form-control input-lg'
+                widget.attrs['class'] = cls_attrs
+                widget.attrs['placeholder'] = field.label
+        return formfields
+
+
+class ContactFormField(AbstractFormField):
+    page = ParentalKey('ContactFormPage', related_name='form_fields')
+
+
+class ContactFormPage(AbstractEmailForm):
+    sub_title = models.CharField(max_length=50, blank=True)
+    intro = RichTextField(blank=True)
+    thank_you_text = RichTextField(blank=True)
+
+    form_builder = CustomFormBuilder
+
+    content_panels = AbstractEmailForm.content_panels + [
+        FieldPanel('sub_title', classname="full"),
+        FieldPanel('intro', classname="full"),
+        InlinePanel('form_fields', label="Form fields"),
+        FieldPanel('thank_you_text', classname="full"),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('from_address', classname="col6"),
+                FieldPanel('to_address', classname="col6"),
+            ]),
+            FieldPanel('subject'),
+        ], "Email"),
     ]
 
 

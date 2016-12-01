@@ -26,6 +26,15 @@ def hero_area(context):
         'request': context['request'],
     }
 
+# Hero area get include title, blurb and hero items
+@register.inclusion_tag('home/tags/test_context.html', takes_context=True)
+def test_context(context):
+    self = context.get('self')  # Should be onstance of home page.
+    import pdb; pdb.set_trace()
+    return {
+        'self': self,
+        'request': context['request'],
+    }
 
 # Hero area get include title, blurb and hero items
 @register.inclusion_tag('home/tags/hero_item.html', takes_context=True)
@@ -44,7 +53,7 @@ def blog_hero_item(context):
     self = context.get('self')
     if self.content_type.model == 'blogindexpage':
         blog_index = self
-    elif self.content_type.model == 'blogpage':
+    else:
         blog_index = self.get_parent().specific
     return {
         'blog_index': blog_index,

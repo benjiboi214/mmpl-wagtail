@@ -1,0 +1,56 @@
+{% extends "home/base.html" %}
+
+{% load wagtailcore_tags %}
+{% load home_tags %}
+
+
+{% block content %}
+    {{ block.super }}
+
+    {% blog_hero_item %}
+
+    <div class="main" role="main">
+        <div id="content" class="content full">
+            <div class="container">
+              <div class="row">
+                    <div class="col-md-8 col-sm-8">
+                      <h4 class="accent-color short">{{ page.sub_title }}</h4>
+                        <h2>{{ page.intro|richtext }}</h2>
+                        <div class="spacer-20"></div>
+                        <form action="{% pageurl page %}" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-5">
+                                    {% for field in form %}
+                                        {% if field.field.widget.large is False %}
+                                            <div class="form-group">
+                                                {{ field }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="col-md-7">
+                                    {% for field in form %}
+                                        {% if field.field.widget.large is True %}
+                                            <div class="form-group">
+                                                {{ field }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <input id="submit" name="submit" type="submit" class="btn btn-primary btn-lg pull-right" value="Submit now!">
+                                </div>
+                            </div>
+                        </form>
+                        <div class="clearfix"></div>
+                        <div id="message"></div>
+
+                    </div>
+
+                    <div class="col-md-4 col-sm-4">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
