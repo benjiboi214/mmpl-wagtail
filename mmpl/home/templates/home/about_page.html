@@ -1,0 +1,83 @@
+{% extends "home/base.html" %}
+
+{% load home_tags %}
+
+{% block content %}
+    {{ block.super }}
+
+    {% index_image %}
+
+    <!-- Breadcrumbs -->
+    {% breadcrumbs %}
+
+
+    <!-- Start Body Content -->
+  	<div class="main" role="main">
+    	<div id="content" class="content full">
+            <div class="container">
+            	<div class="row">
+                    <div class="col-md-9">
+                    	<h4 class="short accent-color">{{ page.sub_title }}</h4>
+                        <h2>Members help sustain this world-class institution while enjoying many outstanding benefits throughout the year.</h2>
+						<p><strong>All Members receive:</strong></p>
+						<ul class="angles">
+    						<li>Free admission to the Main Building and The Cloisters museum and gardens</li>
+                            <li>Members-only emails with advance notice of events, programs, and offers</li>
+                            <li>Access to the exclusive Members Dining Room</li>
+                            <li>Discounts in The Shop Pleu (plus seasonal Double Discounts), and on Audio Guides and Museum parking</li>
+                            <li>Eligibility to rent elegant museum spaces for private events</li>
+                            <li>Special benefits and features in the Members-only section of the Museum's website</li>
+						</ul>
+
+                        <hr class="fw">
+                        <h2 class="widget-title">Membership Levels</h2>
+                        <div class="spacer-30"></div>
+
+                        <!-- Membership Plans -->
+                        <div class="membership-plans">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="icon-box ibox-rounded">
+                                        <div class="ibox-icon">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <h3>Individual</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus.</p>
+                                        <a href="#" class="btn btn-default">Join now</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="icon-box ibox-rounded">
+                                        <div class="ibox-icon">
+                                            <i class="fa fa-users"></i>
+                                        </div>
+                                        <h3>Group</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus.</p>
+                                        <a href="#" class="btn btn-default">Join now</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="icon-box ibox-rounded">
+                                        <div class="ibox-icon">
+                                            <i class="fa fa-building"></i>
+                                        </div>
+                                        <h3>Corporate</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus.</p>
+                                        <a href="#" class="btn btn-default">Join now</a>
+                                    </div>
+                                </div>
+                            </div>
+                       	</div>
+                   	</div>
+
+                    <div class="col-md-3 sidebar right-sidebar">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+   	</div>
+    <!-- End Body Content -->
+
+
+{% endblock %}

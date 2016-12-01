@@ -48,10 +48,12 @@ def hero_item(context, item):
 
 
 # Blog hero area, to display the blog index image and title
-@register.inclusion_tag('home/tags/blog_hero_item.html', takes_context=True)
-def blog_hero_item(context):
+@register.inclusion_tag('home/tags/index_image.html', takes_context=True)
+def index_image(context):
     self = context.get('self')
     if self.content_type.model == 'blogindexpage':
+        blog_index = self
+    elif self.content_type.model == 'aboutpage':
         blog_index = self
     else:
         blog_index = self.get_parent().specific

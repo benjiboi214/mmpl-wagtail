@@ -136,6 +136,7 @@ class CarouselItem(LinkFields):
         abstract = True
 
 
+# Home Page Classes
 class HeroItem(LinkFields):
     title = models.CharField(max_length=25, blank=True)
     page = ParentalKey('home.HomePage', related_name='hero_items')
@@ -148,7 +149,6 @@ class HeroItem(LinkFields):
     ]
 
 
-# Home Page Classes
 class HomePageCarouselItem(Orderable, CarouselItem):
     page = ParentalKey('home.HomePage', related_name='carousel_items')
 
@@ -213,6 +213,9 @@ class BlogPage(Page):
                 intro.append(block)
         return intro
 
+    class Meta:
+        verbose_name = "Blog Page"
+
 BlogPage.content_panels = [
     FieldPanel('title', classname='full title'),
     FieldPanel('date'),
@@ -268,10 +271,39 @@ class BlogIndexPage(MenuPage):
         context['paginator'] = blogs
         return context
 
+    class Meta:
+        verbose_name = "Blog Index Page"
+
     content_panels = [
         FieldPanel('title', classname='full title'),
         ImageChooserPanel('image'),
     ]
+
+
+class AboutPage(MenuPage):
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    sub_title = models.CharField(max_length=50, blank=True)
+    body = RichTextField(blank=True)
+    join_item_title = models.CharField(max_length=25, blank=True)
+
+    content_panels = [
+        FieldPanel('title', classname='full title'),
+        ImageChooserPanel('image'),
+        FieldPanel('sub_title'),
+        FieldPanel('body', classname="full"),
+        FieldPanel('join_item_title')
+        # Insert child class panels here for the join items
+    ]
+
+    class Meta:
+        verbose_name = "About Page"
+
 
 # Abstract for adding CSS and Placeholder attrs to widget
 class CustomFormBuilder(FormBuilder):
