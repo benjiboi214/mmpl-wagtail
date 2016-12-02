@@ -7,7 +7,7 @@
 {% block content %}
     {{ block.super }}
 
-    {% include "home/includes/carousel.html" with carousel_items=self.carousel_items.all only %}
+    {% include "home/includes/carousel.html" with carousel_items=self.carousel_items.all %}
 
     <div class="main" role="main">
         <div id="content" class="content full">
