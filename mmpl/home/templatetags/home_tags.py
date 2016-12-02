@@ -2,7 +2,7 @@ from django import template
 from django.core.exceptions import ObjectDoesNotExist
 
 from home.models import Social, Copyright, AboutFooter, Logo, HeroItem, \
-    Page, BlogPageMediaItem
+    Page, BlogPageMediaItem, AboutPageContactItem
 
 register = template.Library()
 
@@ -13,6 +13,17 @@ def get_site_root(context):
     # NB this returns a core.Page, not the implementation-specific model used
     # so object-comparison to self will return false as objects would differ
     return context['request'].site.root_page
+
+
+# Context test and trace set.
+@register.inclusion_tag('home/tags/test_context.html', takes_context=True)
+def test_context(context):
+    self = context.get('self')  # Should be onstance of home page.
+    import pdb; pdb.set_trace()
+    return {
+        'self': self,
+        'request': context['request'],
+    }
 
 
 # Hero area get include title, blurb and hero items
@@ -26,23 +37,26 @@ def hero_area(context):
         'request': context['request'],
     }
 
-# Hero area get include title, blurb and hero items
-@register.inclusion_tag('home/tags/test_context.html', takes_context=True)
-def test_context(context):
-    self = context.get('self')  # Should be onstance of home page.
-    import pdb; pdb.set_trace()
-    return {
-        'self': self,
-        'request': context['request'],
-    }
 
-# Hero area get include title, blurb and hero items
+# Hero item get specific item model.
 @register.inclusion_tag('home/tags/hero_item.html', takes_context=True)
 def hero_item(context, item):
     self = context.get('self')  # Should be onstance of home page.
     return {
         'blog_index': item.link.specific,
         'hero_item': item,
+        'request': context['request'],
+    }
+
+
+# Contact Item populate
+@register.inclusion_tag('home/tags/contact_item.html', takes_context=True)
+def contact_item(context, item):
+    self = context.get('self')  # Should be onstance of home page.
+    contact_page = item.link_page
+    return {
+        'contact_page': contact_page,
+        'item': item,
         'request': context['request'],
     }
 

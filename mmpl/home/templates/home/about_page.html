@@ -22,45 +22,22 @@
 
                         {{ page.body|richtext }}
 
-                        <hr class="fw">
-                        <h2 class="widget-title">{{ page.join_item_title }}</h2>
-                        <div class="spacer-30"></div>
+                        {% if contact_items %}
+                            <hr class="fw">
+                            <h2 class="widget-title">{{ page.join_item_title }}</h2>
+                            <div class="spacer-30"></div>
 
-                        <!-- Membership Plans -->
-                        <div class="membership-plans">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="icon-box ibox-rounded">
-                                        <div class="ibox-icon">
-                                            <i class="fa fa-user"></i>
+                            <!-- Membership Plans -->
+                            <div class="membership-plans">
+                                <div class="row">
+                                    {% for item in contact_items %}
+                                        <div class="col-md-{{ contact_items_col }}">
+                                            {% contact_item item=item %}
                                         </div>
-                                        <h3>Individual</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus.</p>
-                                        <a href="#" class="btn btn-default">Join now</a>
-                                    </div>
+                                    {% endfor %}
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="icon-box ibox-rounded">
-                                        <div class="ibox-icon">
-                                            <i class="fa fa-users"></i>
-                                        </div>
-                                        <h3>Group</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus.</p>
-                                        <a href="#" class="btn btn-default">Join now</a>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="icon-box ibox-rounded">
-                                        <div class="ibox-icon">
-                                            <i class="fa fa-building"></i>
-                                        </div>
-                                        <h3>Corporate</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus.</p>
-                                        <a href="#" class="btn btn-default">Join now</a>
-                                    </div>
-                                </div>
-                            </div>
-                       	</div>
+                           	</div>
+                        {% endif %}
                    	</div>
 
                     <div class="col-md-3 sidebar right-sidebar">

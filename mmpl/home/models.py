@@ -280,6 +280,18 @@ class BlogIndexPage(MenuPage):
     ]
 
 
+class AboutPageContactItem(LinkFields, Orderable):
+    page = ParentalKey('home.AboutPage', related_name='contact_item')
+    intro = models.CharField(max_length=300, blank=True)
+    icon = models.CharField(max_length=20, verbose_name="Icon Code (fa)")
+
+    panels = [
+        FieldPanel('intro'),
+        FieldPanel('icon'),
+        PageChooserPanel('link_page'),
+    ]
+
+
 class AboutPage(MenuPage):
     image = models.ForeignKey(
         'wagtailimages.Image',
@@ -292,17 +304,43 @@ class AboutPage(MenuPage):
     body = RichTextField(blank=True)
     join_item_title = models.CharField(max_length=25, blank=True)
 
-    content_panels = [
-        FieldPanel('title', classname='full title'),
-        ImageChooserPanel('image'),
-        FieldPanel('sub_title'),
-        FieldPanel('body', classname="full"),
-        FieldPanel('join_item_title')
-        # Insert child class panels here for the join items
-    ]
+    @property
+    def contact_items(self):
+        contact_items = AboutPageContactItem.objects.filter(page=self)
+        return contact_items
+
+    def get_context(self, request):
+        contact_items = self.contact_items
+        pages = len(contact_items)
+        if pages % 3 == 0:
+            col = 4
+        elif pages % 2 == 0:
+            col = 6
+        elif pages % 1 == 0:
+            col = 6
+        context = super(AboutPage, self).get_context(request)
+        context['contact_items'] = contact_items
+        context['contact_items_col'] = col
+        return context
 
     class Meta:
         verbose_name = "About Page"
+
+AboutPage.content_panels = [
+    FieldPanel('title', classname='full title'),
+    ImageChooserPanel('image'),
+    FieldPanel('sub_title'),
+    FieldPanel('body', classname="full"),
+    MultiFieldPanel(
+        [
+            FieldPanel('join_item_title'),
+            InlinePanel(
+                'contact_item',
+                label="Contact Form Item",
+            ),
+        ]
+    )
+]
 
 
 # Abstract for adding CSS and Placeholder attrs to widget
