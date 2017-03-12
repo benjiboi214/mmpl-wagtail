@@ -96,9 +96,9 @@ class LinkFields(models.Model):
     @property
     def link(self):
         if self.link_page:
-            return self.link_page
+            return self.link_page.url
         elif self.link_document:
-            return self.link_document
+            return self.link_document.url
         else:
             return self.link_external
 

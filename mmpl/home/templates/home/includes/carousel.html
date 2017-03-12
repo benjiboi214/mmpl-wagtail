@@ -12,7 +12,7 @@
                       <div class="flex-caption">
                           <h1>{{ item.title }}</h1>
                             <p>{{ item.caption }}</p>
-                            <a href="{% pageurl item.link %}" class="btn btn-info">{{ item.link_text }}</a>
+                            <a href="{{ item.link }}" class="btn btn-info">{{ item.link_text }}</a>
                         </div>
                     </li>
                 {% endfor %}
