@@ -1,0 +1,16 @@
+{% load wagtailcore_tags %}
+{% load home_tags %}
+
+{% if hero_items %}
+    <div class="container">
+      <div class="row">
+          <div class="col-md-3 col-sm-6">
+          <h3 class="widget-title">{{ self.hero_item_title }}</h3>
+            <p>{{ self.hero_item_blurb|richtext }}</p>
+          </div>
+          {% for item in hero_items %}
+              {% hero_item item=item %}
+          {% endfor %}
+        </div>
+    </div>
+{% endif %}

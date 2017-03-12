@@ -1,0 +1,57 @@
+{% extends "home/base.html" %}
+
+{% load home_tags %}
+{% load wagtailimages_tags %}
+
+{% block content %}
+    {{ block.super }}
+
+    {% index_image %}
+
+    <!-- Breadcrumbs -->
+    {% breadcrumbs %}
+
+    <!-- Start Body Content -->
+    <div class="main" role="main">
+        <div id="content" class="content full single-post">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <header class="single-post-header clearfix">
+
+                        <h1 class="post-title">{{ page.title }}</h1>
+                            <div class="meta-data alt">
+                                {% if page.date %}
+                                    <div><i class="fa fa-clock-o"></i> {{ page.date }}</div>
+                                {% endif %}
+                            </div>
+                        </header>
+                        <article class="post-content">
+
+                            {% blog_page_media_item %}
+
+                            {% if page.body %}
+                                <div class="body-content">
+                                    {% include "home/includes/streamfield.html" with content=page.body %}
+                                </div>
+                            {% endif %}
+
+                            <!-- Pagination -->
+                            <ul class="pager">
+                                <li class="pull-left"><a href="#">&larr; Prev Post</a></li>
+                                <li class="pull-right"><a href="#">Next Post &rarr;</a></li>
+                            </ul>
+                        </article>
+                    </div>
+                    <div class="col-md-4 sidebar right-sidebar">
+
+                        <!-- TODO -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Body Content -->
+
+{% endblock %}

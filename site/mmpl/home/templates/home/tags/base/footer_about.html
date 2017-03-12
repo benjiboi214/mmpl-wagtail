@@ -1,0 +1,8 @@
+{% if footer %}
+    <div class="widget footer-widget">
+        {% for foot in footer %}
+            <h4 class="widget-title">{{ foot.title }}</h4>
+            <p>{{ foot.body }}</p>
+        {% endfor %}
+    </div>
+{% endif %}

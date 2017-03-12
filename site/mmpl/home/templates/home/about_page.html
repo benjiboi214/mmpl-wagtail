@@ -1,0 +1,53 @@
+{% extends "home/base.html" %}
+
+{% load home_tags %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+    {{ block.super }}
+
+    {% index_image %}
+
+    <!-- Breadcrumbs -->
+    {% breadcrumbs %}
+
+
+    <!-- Start Body Content -->
+  	<div class="main" role="main">
+    	<div id="content" class="content full">
+            <div class="container">
+            	<div class="row">
+                    <div class="col-md-9">
+                    	<h4 class="short accent-color">{{ page.sub_title }}</h4>
+
+                        {{ page.body|richtext }}
+
+                        {% if contact_items %}
+                            <hr class="fw">
+                            <h2 class="widget-title">{{ page.join_item_title }}</h2>
+                            <div class="spacer-30"></div>
+
+                            <!-- Membership Plans -->
+                            <div class="membership-plans">
+                                <div class="row">
+                                    {% for item in contact_items %}
+                                        <div class="col-md-{{ contact_items_col }}">
+                                            {% contact_item item=item %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                           	</div>
+                        {% endif %}
+                   	</div>
+
+                    <div class="col-md-3 sidebar right-sidebar">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+   	</div>
+    <!-- End Body Content -->
+
+
+{% endblock %}
