@@ -8,3 +8,4 @@ media/
 high-level-source/
 theming-templates/
 patterns/
+**/settings/production.py
