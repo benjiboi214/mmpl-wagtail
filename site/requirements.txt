@@ -27,4 +27,6 @@ wagtailmenus==2.0.1
 webencodings==0.5
 Willow==0.4
 wrapt==1.10.8
+#Production requirments
 uwsgi==2.0.12
+psycopg2==2.7.1
