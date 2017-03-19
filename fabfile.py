@@ -51,7 +51,7 @@ def deploy():
         rsync_project(
             local_dir='site/',
             remote_dir='/tmp/%(environment)s' % env,
-            exclude=['.tox/', '.tests/', 'media/'])
+            exclude=['.tox/', '.tests/', 'media/', '.db.sqlite3'])
         sudo('mv /tmp/%(environment)s deploysite' % env)
         # should also remove cache files/dirs
         sudo('venv/bin/pip install -r deploysite/requirements.txt --upgrade')
@@ -59,6 +59,7 @@ def deploy():
             sudo('../venv/bin/python manage.py createcachetable')
             sudo('../venv/bin/python manage.py collectstatic --noinput')
             # sudo('../venv/bin/python manage.py compress')
+            sudo('../venv/bin/python manage.py makemigrations --noinput')
             sudo('../venv/bin/python manage.py migrate --noinput')
         sudo('rm -rf rollbacksite')
         if exists('site'):
