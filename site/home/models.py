@@ -145,7 +145,11 @@ class HeroItem(LinkFields):
     panels = [
         FieldPanel('title', classname='full'),
         FieldPanel('blurb'),
-        MultiFieldPanel(LinkFields.panels, "Link"),
+        MultiFieldPanel([
+            FieldPanel('link_text'),
+            PageChooserPanel('link_page'),],
+            "Link"
+        ),
     ]
 
 

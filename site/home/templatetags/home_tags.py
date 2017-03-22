@@ -42,8 +42,9 @@ def hero_area(context):
 @register.inclusion_tag('home/tags/hero_item.html', takes_context=True)
 def hero_item(context, item):
     self = context.get('self')  # Should be onstance of home page.
+    # import pdb; pdb.set_trace()
     return {
-        'blog_index': item.link.specific,
+        'blog_index': item.link_page.specific,
         'hero_item': item,
         'request': context['request'],
     }
