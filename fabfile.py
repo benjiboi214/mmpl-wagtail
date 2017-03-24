@@ -59,7 +59,7 @@ def deploy():
             sudo('../venv/bin/python manage.py createcachetable')
             sudo('../venv/bin/python manage.py collectstatic --noinput')
             # sudo('../venv/bin/python manage.py compress')
-            sudo('../venv/bin/python manage.py makemigrations --noinput')
+            # sudo('../venv/bin/python manage.py makemigrations --noinput')
             sudo('../venv/bin/python manage.py migrate --noinput')
         sudo('rm -rf rollbacksite')
         if exists('site'):
