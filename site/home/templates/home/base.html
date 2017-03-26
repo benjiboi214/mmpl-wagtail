@@ -8,7 +8,10 @@
 <div class="topbar">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 col-sm-6 pull-right">
+          <div class="col-md-6 col-sm-6">
+              <p>{% settings_value "WAGTAIL_SITE_NAME" %}</p>
+          </div>
+            <div class="col-md-6 col-sm-6">
                 <ul class="pull-right social-icons-colored">
                     {% social %}
                 </ul>

@@ -1,4 +1,5 @@
 from django import template
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 from home.models import Social, Copyright, AboutFooter, Logo, HeroItem, \
@@ -6,6 +7,11 @@ from home.models import Social, Copyright, AboutFooter, Logo, HeroItem, \
 
 register = template.Library()
 
+
+# settings value
+@register.simple_tag
+def settings_value(name):
+    return getattr(settings, name, "")
 
 # Site wide get root method
 @register.assignment_tag(takes_context=True)
