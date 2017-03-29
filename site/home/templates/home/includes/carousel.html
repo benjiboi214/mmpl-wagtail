@@ -6,7 +6,7 @@
         <div class="flexslider heroflex hero-slider" data-autoplay="yes" data-pagination="no" data-arrows="yes" data-style="fade" data-pause="yes">
             <ul class="slides">
                 {% for item in carousel_items %}
-                    {% image item.image width-1000 as imagedata %}
+                    {% image item.image width-1500 as imagedata %}
                     <li class="parallax" style="background-image:url({{ imagedata.url }})"></li>
                     <li class="parallax" style="background-image:url({{ imagedata.url }})">
                       <div class="flex-caption">
