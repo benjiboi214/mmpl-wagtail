@@ -8,10 +8,19 @@ from home.models import Social, Copyright, AboutFooter, Logo, HeroItem, \
 register = template.Library()
 
 
+@register.simple_tag(takes_context=True)
+def test_tag(context):
+    import pdb; pdb.set_trace()
+    return {
+        'request': context['request']
+    }
+
+
 # settings value
 @register.simple_tag
 def settings_value(name):
     return getattr(settings, name, "")
+
 
 # Site wide get root method
 @register.assignment_tag(takes_context=True)
@@ -161,7 +170,7 @@ def social(context):
 
 # Copyright Snippet
 @register.inclusion_tag('home/tags/base/copyright.html', takes_context=True)
-def copyright(context):
+def copyright_snippet(context):
     return {
         'copyright': Copyright.objects.select_related('page'),
         'request': context['request'],
