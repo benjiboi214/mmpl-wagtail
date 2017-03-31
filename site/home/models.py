@@ -21,6 +21,7 @@ from wagtail.wagtailcore.blocks import TextBlock, StructBlock, StreamBlock, \
     FieldBlock, CharBlock, RichTextBlock, RawHTMLBlock
 from wagtail.wagtailimages.blocks import ImageChooserBlock
 from wagtail.wagtaildocs.blocks import DocumentChooserBlock
+from wagtail.contrib.table_block.blocks import TableBlock
 
 from modelcluster.fields import ParentalKey
 from wagtailmenus.models import MenuPage
@@ -74,6 +75,7 @@ class HomeStreamBlock(StreamBlock):
     pullquote = PullQuoteBlock()
     aligned_html = AlignedHTMLBlock(icon="code", label='Raw HTML')
     document = DocumentChooserBlock(icon="doc-full-inverse")
+    table = TableBlock(template='home/includes/table.html')
 
 
 # Link Abstract
