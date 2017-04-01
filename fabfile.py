@@ -67,6 +67,10 @@ def deploy():
         sudo('chown -R nginx:nginx *')
         sudo('cp site/uwsgi/%(environment)s.ini /etc/uwsgi/vassals/%(environment)s.ini' % env)
 
+    if query_yes_no("Make and Migrate?"):
+        make_n_migrate()
+
+    restart_webserver()
 
 @task
 def make_n_migrate():
@@ -131,3 +135,18 @@ def rollback():
         sudo('mv site rollbacksite')
         sudo('mv deploysite site')
         sudo('chown -R nginx:nginx *')
+
+
+def query_yes_no(query):
+    """Abstract for getting confirmation from user."""
+    yes = set(['yes', 'y', 'ye', ''])
+    no = set(['no', 'n'])
+
+    while True:
+        choice = raw_input(query + ' [Y/n]  ').lower()
+        if choice in yes:
+            return True
+        elif choice in no:
+            return False
+        else:
+            print "Please respond with 'yes' or 'no'"
