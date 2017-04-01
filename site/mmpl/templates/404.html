@@ -3,7 +3,13 @@
 {% block body_class %}template-404{% endblock %}
 
 {% block content %}
-    <h1>404 Page not found</h1>
+    {{ block.super }}
+    <br />
 
-    <h2>Sorry, this page does not exist.</h2>
+    <div class='text-center'>
+      <h1>404 Page not found</h1>
+
+      <h2>Sorry, this page does not exist.</h2>
+    </div>
+
 {% endblock %}
