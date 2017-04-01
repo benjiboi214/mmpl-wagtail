@@ -252,7 +252,11 @@ class BlogIndexPage(MenuPage):
     @property
     def blogs(self):
         # Get list of live blog pages that are descendants of this page
-        blogs = BlogPage.objects.live().descendant_of(self)
+
+        # Selects all descendants of index page, to diaplay on index.
+        # blogs = BlogPage.objects.live().descendant_of(self)
+        # Selects direct descendants of index page.
+        blogs = BlogPage.objects.live().child_of(self)
 
         # Order by most recent date first
         blogs = blogs.order_by('-date')
