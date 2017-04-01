@@ -69,6 +69,33 @@ def deploy():
         sudo('cp site/uwsgi/%(environment)s.ini /etc/uwsgi/vassals/%(environment)s.ini' % env)
 
 
+def makemigrations():
+    require_environment()
+
+    with cd(env.path):
+        sudo("venv/bin/python site/manage.py makemigrations")
+
+
+def migrate():
+    require_environment()
+
+    with cd(env.path):
+        sudo("venv/bin/python site/manage.py migrate")
+
+
+def restart_nginx():
+    sudo("systemctl restart nginx")
+
+
+def restart_uwsgi():
+    sudo("systemctl restart uwsgi")
+
+
+def restart_webserver():
+    restart_uwsgi()
+    restart_nginx()
+
+
 @task
 def rollback():
     """
