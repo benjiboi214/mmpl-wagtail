@@ -3,13 +3,15 @@ from fabric.api import cd, env, sudo, task
 from fabric.contrib.files import exists
 from fabric.contrib.project import rsync_project
 
-
 # TODO::
 #
 # 1. Permissions/Groups for uwsgi/nginx/django
 # 2. Better base directory for django projects (not Home dir)
 #
 # These todo's really are for puppet
+
+env.hosts = ['188.166.221.96']
+
 
 def require_environment():
     """
@@ -58,9 +60,6 @@ def deploy():
         with cd(os.path.join(env.path, 'deploysite')):
             sudo('../venv/bin/python manage.py createcachetable')
             sudo('../venv/bin/python manage.py collectstatic --noinput')
-            # sudo('../venv/bin/python manage.py compress')
-            # sudo('../venv/bin/python manage.py makemigrations --noinput')
-            sudo('../venv/bin/python manage.py migrate --noinput')
         sudo('rm -rf rollbacksite')
         if exists('site'):
             sudo('mv site rollbacksite')
@@ -69,29 +68,48 @@ def deploy():
         sudo('cp site/uwsgi/%(environment)s.ini /etc/uwsgi/vassals/%(environment)s.ini' % env)
 
 
+@task
+def make_n_migrate():
+    require_environment()
+
+    makemigrations()
+    migrate()
+
+
+@task
 def makemigrations():
     require_environment()
 
     with cd(env.path):
-        sudo("venv/bin/python site/manage.py makemigrations")
+        sudo("venv/bin/python site/manage.py makemigrations --noinput")
 
 
+@task
 def migrate():
     require_environment()
 
     with cd(env.path):
-        sudo("venv/bin/python site/manage.py migrate")
+        sudo("venv/bin/python site/manage.py migrate --noinput")
 
 
+@task
 def restart_nginx():
+    require_environment()
+
     sudo("systemctl restart nginx")
 
 
+@task
 def restart_uwsgi():
+    require_environment()
+
     sudo("systemctl restart uwsgi")
 
 
+@task
 def restart_webserver():
+    require_environment()
+
     restart_uwsgi()
     restart_nginx()
 
