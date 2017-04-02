@@ -96,7 +96,11 @@ def index_image(context):
 @register.inclusion_tag('home/tags/blog_page_media_item.html', takes_context=True)
 def blog_page_media_item(context):
     self = context.get('self')
-    media_item = BlogPageMediaItem.objects.get(page=self)
+    #import pdb; pdb.set_trace()
+    try:
+        media_item = BlogPageMediaItem.objects.get(page=self)
+    except BlogPageMediaItem.DoesNotExist:
+        media_item = None
     return {
         'media_item': media_item,
         'request': context['request'],
