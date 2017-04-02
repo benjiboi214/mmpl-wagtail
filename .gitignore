@@ -9,3 +9,4 @@ high-level-source/
 theming-templates/
 patterns/
 **/settings/production.py
+manage-dev.py

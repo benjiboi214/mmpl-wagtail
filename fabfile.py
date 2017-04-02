@@ -53,7 +53,13 @@ def deploy():
         rsync_project(
             local_dir='site/',
             remote_dir='/tmp/%(environment)s' % env,
-            exclude=['.tox/', '.tests/', 'media/', '.db.sqlite3'])
+            exclude=[
+                '.tox/',
+                '.tests/',
+                'media/',
+                '.db.sqlite3',
+                '.manage-dev.py'
+            ])
         sudo('mv /tmp/%(environment)s deploysite' % env)
         # should also remove cache files/dirs
         sudo('venv/bin/pip install -r deploysite/requirements.txt --upgrade')
