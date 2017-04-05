@@ -147,9 +147,10 @@ class HeroItem(LinkFields):
     panels = [
         FieldPanel('title', classname='full'),
         FieldPanel('blurb'),
-        MultiFieldPanel([
-            FieldPanel('link_text'),
-            PageChooserPanel('link_page'),],
+        MultiFieldPanel(
+            [FieldPanel('link_text'),
+             PageChooserPanel('link_page'),
+             ],
             "Link"
         ),
     ]
@@ -268,7 +269,7 @@ class BlogIndexPage(MenuPage):
 
         # Pagination
         page = request.GET.get('page')
-        paginator = Paginator(blogs, 10)  # Show 10 blogs per page
+        paginator = Paginator(blogs, 1)  # Show 10 blogs per page
         try:
             blogs = paginator.page(page)
         except PageNotAnInteger:

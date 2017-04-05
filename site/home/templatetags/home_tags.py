@@ -149,8 +149,8 @@ def breadcrumbs(context):
     }
 
 
-@register.inclusion_tag('home/tags/pagination.html', takes_context=True)
-def pagination(context):
+@register.inclusion_tag('home/tags/index_pagination.html', takes_context=True)
+def index_pagination(context):
     paginator = context['paginator']
     render_nums = []
     for num in range(1, paginator.paginator.num_pages + 1):
@@ -160,6 +160,14 @@ def pagination(context):
         'paginator': paginator,
         'pages': render_nums,
         'request': context['request'],
+    }
+
+
+@register.inclusion_tag('home/tags/blog_pagination.html', takes_context=True)
+def blog_pagination(context):
+    return {
+        'page': context['page'],
+        'request': context['request']
     }
 
 
