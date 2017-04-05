@@ -1,0 +1,10 @@
+{% load wagtailcore_tags %}
+
+<ul class="pager">
+    {% if page.get_previous_by_date %}
+        <li class="pull-left"><a href="{% pageurl page.get_previous_by_date %}">&larr; Prev Post</a></li>
+    {% endif %}
+    {% if page.get_next_by_date %}
+        <li class="pull-right"><a href="{% pageurl page.get_next_by_date %}">Next Post &rarr;</a></li>
+    {% endif %}
+</ul>
