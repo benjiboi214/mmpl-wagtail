@@ -11,6 +11,7 @@ from fabric.contrib.project import rsync_project
 # These todo's really are for puppet
 
 env.hosts = ['188.166.221.96']
+env.app = 'mmpl'
 
 
 def require_environment():
@@ -27,7 +28,6 @@ def production():
     """Production server settings. Must be first task!"""
     env.environment = 'production'
     env.user = 'root'
-    env.app = 'mmpl'
     env.path = '/var/www/%(app)s/%(environment)s' % env
     env.media = '/media/%(app)s/%(environment)s' % env
 
@@ -37,7 +37,15 @@ def development():
     """Production server settings. Must be first task!"""
     env.environment = 'development'
     env.user = 'root'
-    env.app = 'mmpl'
+    env.path = '/var/www/%(app)s/%(environment)s' % env
+    env.media = '/media/%(app)s/%(environment)s' % env
+
+
+@task
+def staging():
+    """Production server settings. Must be first task!"""
+    env.environment = 'staging'
+    env.user = 'root'
     env.path = '/var/www/%(app)s/%(environment)s' % env
     env.media = '/media/%(app)s/%(environment)s' % env
 
@@ -58,7 +66,6 @@ def deploy():
                 '.tests/',
                 'media/',
                 '.db.sqlite3',
-                '.manage-dev.py'
             ])
         sudo('mv /tmp/%(environment)s deploysite' % env)
         # should also remove cache files/dirs
