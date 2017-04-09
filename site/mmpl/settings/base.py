@@ -141,6 +141,20 @@ MEDIA_URL = '/media/'
 
 WAGTAIL_SITE_NAME = "Melbourne Metropolitan Pool League"
 
+
+# Email Settings
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'notifications@mmpl.org.au'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+EMAIL_SUBJECT_PREFIX = '[Wagtail] '
+
+WAGTAILADMIN_NOTIFICATION_FROM_EMAIL = EMAIL_HOST_USER
+
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = 'http://example.com'
