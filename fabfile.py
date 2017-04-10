@@ -113,22 +113,16 @@ def migrate():
 
 @task
 def restart_nginx():
-    require_environment()
-
     sudo("systemctl restart nginx")
 
 
 @task
 def restart_uwsgi():
-    require_environment()
-
     sudo("systemctl restart uwsgi")
 
 
 @task
 def restart_webserver():
-    require_environment()
-
     restart_uwsgi()
     restart_nginx()
 
