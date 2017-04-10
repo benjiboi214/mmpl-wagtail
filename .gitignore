@@ -8,5 +8,5 @@ media/
 high-level-source/
 theming-templates/
 patterns/
-**/settings/production.py
+**/settings/*_secrets.py
 manage-dev.py
