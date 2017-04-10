@@ -6,7 +6,10 @@ from .base import *
 DEBUG = False
 
 
-ALLOWED_HOSTS = ['beta.mmpl.org.au', 'mmpl.org.au', '188.166.221.96']
+ALLOWED_HOSTS = [
+    'staging.bennyda.ninja',
+    '188.166.221.96'
+]
 
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

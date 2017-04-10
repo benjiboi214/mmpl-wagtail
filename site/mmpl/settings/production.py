@@ -6,7 +6,12 @@ from .base import *
 DEBUG = False
 
 
-ALLOWED_HOSTS = ['beta.mmpl.org.au', 'mmpl.org.au', '188.166.221.96']
+ALLOWED_HOSTS = [
+    'beta.mmpl.org.au',
+    'mmpl.org.au',
+    '188.166.221.96',
+    'production.bennyda.ninja'
+]
 
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -16,8 +21,8 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
 ]
 
-STATIC_ROOT = '/media/mmpl/development/static'
-MEDIA_ROOT = '/media/mmpl/development/media'
+STATIC_ROOT = '/media/mmpl/production/static'
+MEDIA_ROOT = '/media/mmpl/production/media'
 
 
 try:

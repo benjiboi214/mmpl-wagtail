@@ -1,5 +1,5 @@
 import os
-from fabric.api import cd, env, sudo, task
+from fabric.api import cd, env, sudo, task, shell_env
 from fabric.contrib.files import exists
 from fabric.contrib.project import rsync_project
 
@@ -69,13 +69,15 @@ def deploy():
             ])
         sudo('mv /tmp/%(environment)s deploysite' % env)
         # should also remove cache files/dirs
-        sudo('venv/bin/pip install -r deploysite/requirements.txt --upgrade')
-        with cd(os.path.join(env.path, 'deploysite')):
-            sudo('../venv/bin/python manage.py createcachetable')
-            sudo('../venv/bin/python manage.py collectstatic --noinput')
-        sudo('rm -rf rollbacksite')
-        if exists('site'):
-            sudo('mv site rollbacksite')
+
+        with shell_env(DJANGO_SETTINGS_MODULE='mmpl.settings.%(environment)s' % env):
+            sudo('venv/bin/pip install -r deploysite/requirements.txt --upgrade')
+            with cd(os.path.join(env.path, 'deploysite')):
+                sudo('../venv/bin/python manage.py createcachetable')
+                sudo('../venv/bin/python manage.py collectstatic --noinput')
+            sudo('rm -rf rollbacksite')
+            if exists('site'):
+                sudo('mv site rollbacksite')
         sudo('mv deploysite site')
         sudo('chown -R nginx:nginx *')
         sudo('cp site/uwsgi/%(environment)s.ini /etc/uwsgi/vassals/%(environment)s.ini' % env)
