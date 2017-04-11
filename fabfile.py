@@ -12,6 +12,7 @@ from fabric.contrib.project import rsync_project
 
 env.hosts = ['188.166.221.96']
 env.app = 'mmpl'
+env.user = 'root'
 
 
 def require_environment():
@@ -27,7 +28,6 @@ def require_environment():
 def production():
     """Production server settings. Must be first task!"""
     env.environment = 'production'
-    env.user = 'root'
     env.path = '/var/www/%(app)s/%(environment)s' % env
     env.media = '/media/%(app)s/%(environment)s' % env
 
@@ -36,7 +36,6 @@ def production():
 def development():
     """Production server settings. Must be first task!"""
     env.environment = 'development'
-    env.user = 'root'
     env.path = '/var/www/%(app)s/%(environment)s' % env
     env.media = '/media/%(app)s/%(environment)s' % env
 
@@ -45,7 +44,6 @@ def development():
 def staging():
     """Production server settings. Must be first task!"""
     env.environment = 'staging'
-    env.user = 'root'
     env.path = '/var/www/%(app)s/%(environment)s' % env
     env.media = '/media/%(app)s/%(environment)s' % env
 
