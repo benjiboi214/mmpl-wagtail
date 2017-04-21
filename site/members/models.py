@@ -35,7 +35,7 @@ class Player(models.Model):
         verbose_name='Umpire Accreditation'
     )
 
-    def __str__(self):
+    def unicode(self):
         return "%s %s" % (self.firstname, self.lastname)
 
 
@@ -43,22 +43,22 @@ class Notifications():
     '''Model for tracking notifications preferences for various parts of the
     website.'''
     player = models.OneToOneField(
-            Player,
-            on_delete=models.CASCADE,
-            primary_key=True
-        )
-    events = models.BooleanField()
-    results = models.BooleanField()
-    resources = models.BooleanField()
-    news = models.BooleanField()
+        Player,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+    events = models.BooleanField(default=True)
+    results = models.BooleanField(default=True)
+    resources = models.BooleanField(default=True)
+    news = models.BooleanField(default=True)
 
 
 class Venue(models.Model):
     '''Model for tracking Venues visited by the league. Contains all relevant
     information for contacting venue, as well as housing the number of
     tables available to be used in fixture generation.'''
-    # Has a name
-    # Has an address
+    name = models.CharField(max_length=128)
+    # Has an address Use furiousluke-address
     # Has a number of tables
     # Has a contact number
     # Has a contact name
