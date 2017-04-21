@@ -1,0 +1,4 @@
+#Production requirements
+-r base.txt
+uwsgi==2.0.12
+psycopg2==2.7.1
