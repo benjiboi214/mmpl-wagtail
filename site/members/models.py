@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
+from datetime import date
 
 from django.db import models
 
-from datetime import date
+from address.models import AddressField
 
 
 class Player(models.Model):
@@ -21,7 +22,7 @@ class Player(models.Model):
     dob = models.DateField(verbose_name='Date of Birth')
     email = models.EmailField(verbose_name='Email')
     phone = models.CharField(max_length=15, verbose_name='Phone Number')
-    address = models.CharField(max_length=256, verbose_name='Address')
+    address = AddressField(related_name='player', verbose_name='Address')
     joined = models.DateField(default=date.today, verbose_name='Join Date')
     updated = models.DateField(auto_now=True, verbose_name='Last Updated')
     media_release = models.BooleanField(
@@ -58,12 +59,11 @@ class Venue(models.Model):
     information for contacting venue, as well as housing the number of
     tables available to be used in fixture generation.'''
     name = models.CharField(max_length=128)
-    # Has an address Use furiousluke-address
-    # Has a number of tables
-    # Has a contact number
-    # Has a contact name
+    address = AddressField(related_name='venue', verbose_name='Address')
+    tables = models.PositiveIntegerField(verbose_name='Number of Tables')
+    models.CharField(max_length=15, verbose_name='Phone Number')
+    contact_name = models.CharField(max_length=128, verbose_name='Contact Name')
     # Has hours of operation
-    pass
 
 
 class Committee(models.Model):
