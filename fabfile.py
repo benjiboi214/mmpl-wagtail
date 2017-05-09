@@ -1,5 +1,5 @@
 import os
-from fabric.api import cd, env, sudo, task, shell_env
+from fabric.api import cd, env, sudo, task, shell_env, run
 from fabric.contrib.files import exists
 from fabric.contrib.project import rsync_project
 
@@ -10,9 +10,7 @@ from fabric.contrib.project import rsync_project
 #
 # These todo's really are for puppet
 
-env.hosts = ['188.166.221.96']
 env.app = 'mmpl'
-env.user = 'root'
 
 
 def require_environment():
@@ -27,7 +25,10 @@ def require_environment():
 @task
 def production():
     """Production server settings. Must be first task!"""
+    env.hosts = ['ansible.bennyda.ninja']
     env.environment = 'production'
+    env.user = 'root'
+    env.django_user = 'admin'
     env.path = '/var/www/%(app)s/%(environment)s' % env
     env.media = '/media/%(app)s/%(environment)s' % env
 
@@ -35,7 +36,10 @@ def production():
 @task
 def development():
     """Production server settings. Must be first task!"""
+    env.hosts = ['ansible.bennyda.ninja']
     env.environment = 'development'
+    env.user = 'root'
+    env.django_user = 'admin'
     env.path = '/var/www/%(app)s/%(environment)s' % env
     env.media = '/media/%(app)s/%(environment)s' % env
 
@@ -43,117 +47,44 @@ def development():
 @task
 def staging():
     """Production server settings. Must be first task!"""
+    env.hosts = ['ansible.bennyda.ninja']
     env.environment = 'staging'
+    env.user = 'root'
+    env.django_user = 'admin'
     env.path = '/var/www/%(app)s/%(environment)s' % env
     env.media = '/media/%(app)s/%(environment)s' % env
 
 
 @task
-def deploy():
-    """Deploy the application, install requirements,
-    collect static, compress, and migrate"""
+def toggle_maintenance():
     require_environment()
-
-    with cd(env.path):
-        sudo('rm -rf deploysite')
-        rsync_project(
-            local_dir='site/',
-            remote_dir='/tmp/%(environment)s' % env,
-            exclude=[
-                '.tox/',
-                '.tests/',
-                'media/',
-                '.db.sqlite3',
-            ])
-        sudo('mv /tmp/%(environment)s deploysite' % env)
-        # should also remove cache files/dirs
-
-        with shell_env(DJANGO_SETTINGS_MODULE='mmpl.settings.%(environment)s' % env):
-            sudo('venv/bin/pip install -r deploysite/requirements.txt --upgrade')
-            with cd(os.path.join(env.path, 'deploysite')):
-                sudo('../venv/bin/python manage.py createcachetable')
-                sudo('../venv/bin/python manage.py collectstatic --noinput')
-            sudo('rm -rf rollbacksite')
-            if exists('site'):
-                sudo('mv site rollbacksite')
-        sudo('mv deploysite site')
-        sudo('chown -R nginx:nginx *')
-        sudo('cp site/uwsgi/%(environment)s.ini /etc/uwsgi/vassals/%(environment)s.ini' % env)
-
-    if query_yes_no("Make and Migrate?"):
-        make_n_migrate()
-
-    restart_webserver()
-
-@task
-def make_n_migrate():
-    require_environment()
-
-    makemigrations()
-    migrate()
-
-
-@task
-def makemigrations():
-    require_environment()
-
-    with cd(env.path):
-        sudo("venv/bin/python site/manage.py makemigrations --noinput")
-
-
-@task
-def migrate():
-    require_environment()
-
-    with cd(env.path):
-        sudo("venv/bin/python site/manage.py migrate --noinput")
+    with cd(os.path.join(env.path, 'templates')):
+        if exists('maintenance_on.html'):
+            run('mv maintenance_on.html maintenance_off.html')
+        elif exists('maintenance_off.html'):
+            run('mv maintenance_off maintenance_on.html')
 
 
 @task
 def restart_nginx():
+    require_environment()
     sudo("systemctl restart nginx")
 
 
 @task
 def restart_uwsgi():
+    require_environment()
     sudo("systemctl restart uwsgi")
 
 
 @task
 def restart_webserver():
+    require_environment()
     restart_uwsgi()
     restart_nginx()
 
 
 @task
-def rollback():
-    """
-    Rolls back to last known state. Multiple rollbacks simply toggles.
-    We intentionally do not call migrate -- reverse migrations must be
-    done by hand.
-    """
+def clone_environment():
+    # copy postgres db from one env to another
     require_environment()
-
-    with cd(env.path):
-        sudo('mv rollbacksite deploysite')
-        with cd(os.path.join(env.path, 'deploysite')):
-            sudo('../venv/bin/python manage.py collectstatic --noinput')
-            sudo('../venv/bin/python manage.py compress')
-        sudo('mv site rollbacksite')
-        sudo('mv deploysite site')
-        sudo('chown -R nginx:nginx *')
-
-
-def query_yes_no(query):
-    """Abstract for getting confirmation from user."""
-    yes = set(['yes', 'y', 'ye', ''])
-    no = set(['no', 'n'])
-
-    while True:
-        choice = raw_input(query + ' [Y/n]  ').lower()
-        if choice in yes:
-            return True
-        elif choice in no:
-            return False
-        else:
-            print "Please respond with 'yes' or 'no'"
