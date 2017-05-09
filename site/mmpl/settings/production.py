@@ -7,6 +7,7 @@ DEBUG = False
 
 
 ALLOWED_HOSTS = [
+    'ansible.bennyda.ninja',
     'beta.mmpl.org.au',
     'mmpl.org.au',
     '188.166.221.96',
