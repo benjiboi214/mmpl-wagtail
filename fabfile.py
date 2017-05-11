@@ -126,6 +126,8 @@ def clone_environment(source, destination):
     local('rm -rf %s' % tmp_media_dir)
     local('rm %s' % tmp_dump_file)
 
+    restart_webserver()
+
 
 def get_env_values(source, destination):
     globals()[source]()
