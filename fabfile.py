@@ -81,6 +81,10 @@ def restart_webserver():
     restart_nginx()
 
 
+# Add a git pull task? Probably best to build another
+# ansible playbook that just does github and web roles.
+
+
 @task
 def clone_environment(source, destination):
     """Given source and destination arguments, create a database dump and copy
