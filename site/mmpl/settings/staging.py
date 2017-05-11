@@ -8,6 +8,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'staging.bennyda.ninja',
+    'test.bennyda.ninja',
 ]
 
 
