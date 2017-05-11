@@ -8,7 +8,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'staging.bennyda.ninja',
-    '188.166.221.96'
 ]
 
 
