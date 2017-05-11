@@ -123,10 +123,10 @@ def clone_environment(source, destination):
         sudo('rm %s' % tmp_dump_file)  # remove dump from destination host
         # migrate mmpl_production to mmpl_staging
 
+        restart_webserver()
+
     local('rm -rf %s' % tmp_media_dir)
     local('rm %s' % tmp_dump_file)
-
-    restart_webserver()
 
 
 def get_env_values(source, destination):
