@@ -19,7 +19,7 @@
         {% elif media_item.image %}
             <div class="post-media">
                   {% image media_item.image max-600x500 as img %}
-                  <a href="blog-single.html" class="img-thumbnail"><img src="{{ img.url }}" alt="" class="post-thumb"></a>
+                  <a href="{% pageurl blog %}" class="img-thumbnail"><img src="{{ img.url }}" alt="" class="post-thumb"></a>
             </div>
         {% endif %}
     </div>
