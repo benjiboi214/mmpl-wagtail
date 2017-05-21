@@ -4,7 +4,6 @@ from fabric.api import cd, env, sudo, task, run, settings, get, \
 from fabric.contrib.files import exists
 
 env.app = 'mmpl'
-env.user = 'root'
 
 
 def require_environment():
