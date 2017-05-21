@@ -7,10 +7,9 @@ DEBUG = False
 
 
 ALLOWED_HOSTS = [
-    'beta.mmpl.org.au',
+    'production.bennyda.ninja',
     'mmpl.org.au',
-    '188.166.221.96',
-    'production.bennyda.ninja'
+    'www.mmpl.org.au',
 ]
 
 
