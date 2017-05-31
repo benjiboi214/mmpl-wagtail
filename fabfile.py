@@ -81,10 +81,37 @@ def restart_webserver():
     restart_nginx()
 
 
+@task
+def clone_to_local_env():
+    require_environment()
+    source_db_name = '%(app)s_%(environment)s' % env
+    destination_db_name = '%(app)s_development' % env
+    tmp_dump_file = os.path.join('/tmp', source_db_name + '.sql')
+
+    # On Remote Machine, get relevant files.
+    sudo('systemctl stop uwsgi')
+    sudo('sudo -Hiu postgres pg_dump -C -Fp -f %s %s' % (tmp_dump_file, source_db_name))
+    sudo('systemctl start uwsgi')
+
+    # rsync media and sql dump to local dir
+    get(remote_path=tmp_dump_file, local_path='/tmp')
+    get(remote_path=os.path.join(env.media, 'media'), local_path='/media/mmpl/development')
+
+    sudo('rm %s' % tmp_dump_file)  # remove dump from source host
+
+    # On Local Machine, import DB
+    # build db from dump
+    local('dropdb %s' % destination_db_name)
+    local('psql -f %s' % tmp_dump_file)
+    local('createdb -O %s -T %s %s' % (env['app'], source_db_name, destination_db_name))
+    local('dropdb %s' % source_db_name)
+
+    local('rm %s' % tmp_dump_file)  # remove dump from destination host
+    # migrate mmpl_production to mmpl_staging
+
+
 # Add a git pull task? Probably best to build another
 # ansible playbook that just does github and web roles.
-
-
 @task
 def clone_environment(source, destination):
     """Given source and destination arguments, create a database dump and copy
