@@ -1,0 +1,12 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+    {{ block.super }}
+
+    <h1>Players</h1>
+    <ul>
+        {% for player in object_list %}
+            <li>{{ player }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

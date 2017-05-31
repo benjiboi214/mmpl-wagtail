@@ -1,0 +1,12 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+    {{ block.super }}
+
+    <h2>Committees</h2>
+    <ul>
+        {% for committee in object_list %}
+            <li>{{ committee }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

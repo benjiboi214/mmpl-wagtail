@@ -1,0 +1,12 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+    {{ block.super }}
+
+    <h2>Venues</h2>
+    <ul>
+        {% for venue in object_list %}
+            <li>{{ venue.name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
