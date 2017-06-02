@@ -1,0 +1,85 @@
+{% extends "members/base.html" %}
+
+{% block data %}
+    <h1>{{ object }}</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th> Attribute </th>
+                <th> Value </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> First Name </td>
+                <td> {{ object.firstname }} </td>
+            </tr>
+            <tr>
+                <td> Last Name </td>
+                <td> {{ object.lastname }} </td>
+            </tr>
+            <tr>
+                <td> Date of Birth </td>
+                <td> {{ object.dob }} </td>
+            </tr>
+            <tr>
+                <td> Email </td>
+                <td> {{ object.email }} </td>
+            </tr>
+            <tr>
+                <td> Phone </td>
+                <td> {{ object.phone }} </td>
+            </tr>
+            <tr>
+                <td> Address </td>
+                <td> {{ object.address }} </td>
+            </tr>
+            <tr>
+                <td> Umpire Accreditation </td>
+                <td> {{ object.get_umpire_accreditation_display }} </td>
+            </tr>
+            <tr>
+                <td> Joined </td>
+                <td> {{ object.joined }} </td>
+            </tr>
+            <tr>
+                <td> Last Updated </td>
+                <td> {{ object.updated }} </td>
+            </tr>
+            <tr>
+                <td> Media Release Signed </td>
+                <td> {{ object.media_release }} </td>
+            </tr>
+            <tr>
+                <td> Media Release Signed Date </td>
+                <td> {{ object.media_release_date }} </td>
+            </tr>
+            <tr>
+                <td> Voilence and Aggression Policy </td>
+                <td> {{ object.vanda_policy }} </td>
+            </tr>
+            <tr>
+                <td> Voilence and Aggression Policy Sign Date </td>
+                <td> {{ object.vanda_policy_date }} </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="widget sidebar-widget widget_categories box-style1">
+      	<h3 class="widget-title">Actions</h3>
+        <ul>
+          <li><a href="#"></i> Add</a></li>
+          <li><a href="#"></i> Remove</a></li>
+        </ul>
+    </div>
+    <div class="widget sidebar-widget widget_categories box-style1">
+        <h3 class="widget-title">Navigation</h3>
+        <ul>
+          <li><a href="#"></i> Players</a></li>
+          <li><a href="#"></i> Committees</a></li>
+        	<li><a href="#"></i> Venues</a></li>
+        </ul>
+    </div>
+{% endblock %}

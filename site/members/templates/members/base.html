@@ -1,0 +1,33 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block content %}
+    {{ block.super }}
+    <!--
+    Do Breadcrumbing for Members App.
+    -->
+
+    <div class="hero-area">
+        <div class="page-header" style="background-image: url({% static "img/members_header.jpg" %})")>
+            <div><div><span>Members</span></div></div>
+        </div>
+    </div>
+
+    <div class="main" role="main">
+        <div id="content" class="content full">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        {% block data %}
+                        {% endblock data %}
+                    </div>
+                    <div class="col-md-4">
+                        {% block sidebar %}
+                        {% endblock sidebar %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

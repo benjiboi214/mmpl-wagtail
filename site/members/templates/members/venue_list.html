@@ -1,12 +1,41 @@
-{% extends "home/base.html" %}
+{% extends "members/base.html" %}
 
-{% block content %}
-    {{ block.super }}
+{% block data %}
+    <h1>Venues</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th> Name </th>
+                <th> Phone </th>
+                <th> Email </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venue in object_list %}
+            <tr>
+                <td> <a href="{{ venue.get_absolute_url }}">{{ venue }}</a> </td>
+                <td> {{ venue.phone }} </td>
+                <td> {{ venue.email }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
 
-    <h2>Venues</h2>
-    <ul>
-        {% for venue in object_list %}
-            <li>{{ venue.name }}</li>
-        {% endfor %}
-    </ul>
+{% block sidebar %}
+    <div class="widget sidebar-widget widget_categories box-style1">
+      	<h3 class="widget-title">Actions</h3>
+        <ul>
+          <li><a href="#"></i> Add</a></li>
+          <li><a href="#"></i> Remove</a></li>
+        </ul>
+    </div>
+    <div class="widget sidebar-widget widget_categories box-style1">
+        <h3 class="widget-title">Navigation</h3>
+        <ul>
+          <li><a href="#"></i> Players</a></li>
+          <li><a href="#"></i> Committees</a></li>
+        	<li><a href="#"></i> Venues</a></li>
+        </ul>
+    </div>
 {% endblock %}

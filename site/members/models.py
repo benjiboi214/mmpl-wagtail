@@ -4,6 +4,7 @@ from datetime import date
 from django.db import models
 
 from address.models import AddressField
+from slugify import UniqueSlugify
 
 
 class Player(models.Model):
@@ -47,6 +48,16 @@ class Player(models.Model):
     vanda_policy_date = models.DateField(
         verbose_name='Violence and Aggression Policy Agreement Date',
         blank=True)
+    slug = models.SlugField(blank=True)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('player_detail', args=[self.slug])
+
+    def save(self, **kwargs):
+        unique_slugify = UniqueSlugify(to_lower=True)
+        self.slug = unique_slugify(self.__unicode__())
+        super(Player, self).save(**kwargs)
 
     def __unicode__(self):
         return "%s %s" % (self.firstname, self.lastname)
@@ -83,12 +94,23 @@ class Venue(models.Model):
     name = models.CharField(max_length=128)
     address = AddressField(related_name='venue', verbose_name='Address')
     tables = models.PositiveIntegerField(verbose_name='Number of Tables')
-    models.CharField(max_length=15, verbose_name='Phone Number')
+    phone = models.CharField(max_length=15, verbose_name='Phone Number')
+    email = models.EmailField(verbose_name='Email')
     contact_name = models.CharField(
         max_length=128,
         blank=True,
         verbose_name='Contact Name')
     # Has hours of operation https://github.com/arteria/django-openinghours
+    slug = models.SlugField(blank=True)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('venue_detail', args=[self.slug])
+
+    def save(self, **kwargs):
+        unique_slugify = UniqueSlugify(to_lower=True)
+        self.slug = unique_slugify(self.__unicode__())
+        super(Venue, self).save(**kwargs)
 
     def __unicode__(self):
         return self.name
@@ -134,6 +156,20 @@ class Committee(models.Model):
     end_date = models.DateField(
         default=date.today,
         verbose_name='End Date')
+    slug = models.SlugField(blank=True)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('committee_detail', args=[self.slug])
+
+    def save(self, **kwargs):
+        unique_slugify = UniqueSlugify(to_lower=True)
+        self.slug = unique_slugify(self.__unicode__())
+        super(Committee, self).save(**kwargs)
 
     def __unicode__(self):
-        return "%s - %s" % (self.president, self.start_date)
+        return "%s: %s-%s" % (
+            self.president,
+            self.start_date.year,
+            self.end_date.year
+        )

@@ -1,23 +1,35 @@
 {% extends "members/base.html" %}
 
 {% block data %}
-    <h1>Players</h2>
+    <h1>{{ object }}</h2>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th> Name </th>
-                <th> Phone </th>
-                <th> Email </th>
+                <th> Attribute </th>
+                <th> Value </th>
             </tr>
         </thead>
         <tbody>
-            {% for player in object_list %}
             <tr>
-                <td> <a href="{{ player.get_absolute_url }}">{{ player }}</a> </td>
-                <td> {{ player.phone }} </td>
-                <td> {{ player.email }} </td>
+                <td> Venue Name </td>
+                <td> {{ object.name }} </td>
             </tr>
-            {% endfor %}
+            <tr>
+                <td> Address </td>
+                <td> {{ object.address }} </td>
+            </tr>
+            <tr>
+                <td> # Tables </td>
+                <td> {{ object.tables }} </td>
+            </tr>
+            <tr>
+                <td> Phone </td>
+                <td> {{ object.phone }} </td>
+            </tr>
+            <tr>
+                <td> Contact Name </td>
+                <td> {{ object.contact_name }} </td>
+            </tr>
         </tbody>
     </table>
 {% endblock %}
