@@ -1,17 +1,23 @@
 {% extends "home/base.html" %}
 {% load static %}
+{% load members_tags %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {% breadcrumb "MMPL" "/" %}
+    {% breadcrumb "Members" "members_home" %}
+{% endblock %}
 
 {% block content %}
     {{ block.super }}
-    <!--
-    Do Breadcrumbing for Members App.
-    -->
 
     <div class="hero-area">
         <div class="page-header" style="background-image: url({% static "img/members_header.jpg" %})")>
             <div><div><span>Members</span></div></div>
         </div>
     </div>
+
+    {% render_breadcrumbs %}
 
     <div class="main" role="main">
         <div id="content" class="content full">
@@ -23,6 +29,7 @@
                     </div>
                     <div class="col-md-4">
                         {% block sidebar %}
+                            {% navigation_sidebar %}
                         {% endblock sidebar %}
                     </div>
                 </div>

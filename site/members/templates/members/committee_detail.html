@@ -1,4 +1,11 @@
-{% extends "members/base.html" %}
+{% extends "members/committee_list.html" %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb object "committee_detail" object.slug %}
+{% endblock %}
 
 {% block data %}
     <h1>{{ object }}</h2>
@@ -44,22 +51,4 @@
             </tr>
         </tbody>
     </table>
-{% endblock %}
-
-{% block sidebar %}
-    <div class="widget sidebar-widget widget_categories box-style1">
-      	<h3 class="widget-title">Actions</h3>
-        <ul>
-          <li><a href="#"></i> Add</a></li>
-          <li><a href="#"></i> Remove</a></li>
-        </ul>
-    </div>
-    <div class="widget sidebar-widget widget_categories box-style1">
-        <h3 class="widget-title">Navigation</h3>
-        <ul>
-          <li><a href="#"></i> Players</a></li>
-          <li><a href="#"></i> Committees</a></li>
-        	<li><a href="#"></i> Venues</a></li>
-        </ul>
-    </div>
 {% endblock %}

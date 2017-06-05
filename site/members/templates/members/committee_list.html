@@ -1,5 +1,12 @@
 {% extends "members/base.html" %}
 
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb 'Committees' 'members:committee_list' %}
+{% endblock %}
+
 {% block data %}
     <h1>Committees</h2>
     <table class="table table-bordered">
@@ -32,12 +39,7 @@
           <li><a href="#"></i> Remove</a></li>
         </ul>
     </div>
-    <div class="widget sidebar-widget widget_categories box-style1">
-        <h3 class="widget-title">Navigation</h3>
-        <ul>
-          <li><a href="#"></i> Players</a></li>
-          <li><a href="#"></i> Committees</a></li>
-        	<li><a href="#"></i> Venues</a></li>
-        </ul>
-    </div>
+
+    {{ block.super }}
+
 {% endblock %}

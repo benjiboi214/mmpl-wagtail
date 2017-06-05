@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'search',
     'members',
     'address',
+    'django_bootstrap_breadcrumbs',
+    'debug_toolbar',
 
     'wagtail.wagtailforms',
     'wagtail.wagtailredirects',
@@ -69,6 +71,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -149,6 +152,9 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+
+# Breadcrumb settings
+BREADCRUMBS_TEMPLATE = os.path.join(BASE_DIR, 'members/templates/members/tags/breadcrumbs.html')
 
 # Wagtail settings
 

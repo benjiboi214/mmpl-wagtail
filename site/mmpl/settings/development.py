@@ -5,12 +5,12 @@ from .base import *
 
 DEBUG = True
 
-
 ALLOWED_HOSTS = [
     'development.bennyda.ninja',
     '188.166.221.96'
 ]
 
+INTERNAL_IPS = ['127.0.0.1']
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
