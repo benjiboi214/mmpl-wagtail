@@ -4,7 +4,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb 'Players' 'members:player_list' %}
+    {% breadcrumb 'Players' 'player_list' %}
 {% endblock %}
 
 {% block data %}
@@ -33,11 +33,7 @@
     <div class="widget sidebar-widget widget_categories box-style1">
       	<h3 class="widget-title">Actions</h3>
         <ul>
-          <li><a href="#"></i> Add</a></li>
-          <li><a href="#"></i> Remove</a></li>
+          <li><a href="{% url 'player_add' %}"></i> Add</a></li>
         </ul>
     </div>
-
-    {{ block.super }}
-
 {% endblock %}

@@ -5,7 +5,7 @@
 
 {% block breadcrumbs %}
     {% breadcrumb "MMPL" "/" %}
-    {% breadcrumb "Members" "members_home" %}
+    {% breadcrumb "Members" "members_base" %}
 {% endblock %}
 
 {% block content %}
@@ -29,8 +29,11 @@
                     </div>
                     <div class="col-md-4">
                         {% block sidebar %}
-                            {% navigation_sidebar %}
+                        
                         {% endblock sidebar %}
+
+                        {% navigation_sidebar %}
+
                     </div>
                 </div>
             </div>

@@ -1,0 +1,20 @@
+{% extends "members/venue_list.html" %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Add Venue" "" %}
+{% endblock %}
+
+{% block data %}
+    <h1>Add Venue</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit" />
+    </form>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
