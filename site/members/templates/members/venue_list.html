@@ -4,7 +4,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb 'Venues' 'venue_list' %}
+    {% breadcrumb 'Venues' 'members:venue_list' %}
 {% endblock %}
 
 {% block data %}
@@ -33,7 +33,7 @@
     <div class="widget sidebar-widget widget_categories box-style1">
       	<h3 class="widget-title">Actions</h3>
         <ul>
-          <li><a href="{% url 'venue_add' %}"></i> Add</a></li>
+          <li><a href="{% url 'members:venue_add' %}"></i> Add</a></li>
         </ul>
     </div>
 {% endblock %}

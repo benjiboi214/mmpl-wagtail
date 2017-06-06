@@ -4,7 +4,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb object "committee_detail" object.slug %}
+    {% breadcrumb object "members:committee_detail" object.slug %}
 {% endblock %}
 
 {% block data %}
@@ -57,8 +57,8 @@
     <div class="widget sidebar-widget widget_categories box-style1">
       	<h3 class="widget-title">Actions</h3>
         <ul>
-          <li><a href="#"></i> Update</a></li>
-          <li><a href="#"></i> Remove</a></li>
+          <li><a href="{% url 'members:committee_update' object.slug %}"></i> Update</a></li>
+          <li><a href="{% url 'members:committee_delete' object.slug %}"></i> Remove</a></li>
         </ul>
     </div>
 {% endblock %}

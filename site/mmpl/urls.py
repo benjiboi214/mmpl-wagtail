@@ -13,7 +13,7 @@ from wagtail.wagtaildocs import urls as wagtaildocs_urls
 urlpatterns = [
     url(r'^django-admin/', include(admin.site.urls)),
 
-    url(r'^members/', include(members_urls)),
+    url(r'^members/', include(members_urls, namespace='members')),
 
     url(r'^admin/', include(wagtailadmin_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),

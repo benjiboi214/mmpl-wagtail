@@ -52,7 +52,7 @@ class Player(models.Model):
 
     def get_absolute_url(self):
         from django.urls import reverse
-        return reverse('player_detail', args=[self.slug])
+        return reverse('members:player_detail', args=[self.slug])
 
     def save(self, **kwargs):
         unique_slugify = UniqueSlugify(to_lower=True)
@@ -105,7 +105,7 @@ class Venue(models.Model):
 
     def get_absolute_url(self):
         from django.urls import reverse
-        return reverse('venue_detail', args=[self.slug])
+        return reverse('members:venue_detail', args=[self.slug])
 
     def save(self, **kwargs):
         unique_slugify = UniqueSlugify(to_lower=True)
@@ -160,7 +160,7 @@ class Committee(models.Model):
 
     def get_absolute_url(self):
         from django.urls import reverse
-        return reverse('committee_detail', args=[self.slug])
+        return reverse('members:committee_detail', args=[self.slug])
 
     def save(self, **kwargs):
         unique_slugify = UniqueSlugify(to_lower=True)
