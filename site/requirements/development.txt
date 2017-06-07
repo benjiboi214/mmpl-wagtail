@@ -1,5 +1,5 @@
 #Development Settings
 django-address==0.1.5  # https://github.com/furious-luke/django-address
-awesome-slugify==1.6.5  # https://github.com/dimka665/awesome-slugify
 django-bootstrap-breadcrumbs==0.8.2  # https://github.com/prymitive/bootstrap-breadcrumbs
 django_debug_toolbar==1.8  # https://django-debug-toolbar.readthedocs.io/en/stable/installation.html#getting-the-code
+django-unique-slugify==1.1  # https://github.com/defcube/django-unique-slugify

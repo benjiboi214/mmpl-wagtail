@@ -4,7 +4,7 @@ from datetime import date
 from django.db import models
 
 from address.models import AddressField
-from slugify import UniqueSlugify
+from django_unique_slugify import unique_slugify
 
 
 class Player(models.Model):
@@ -55,8 +55,7 @@ class Player(models.Model):
         return reverse('members:player_detail', args=[self.slug])
 
     def save(self, **kwargs):
-        unique_slugify = UniqueSlugify(to_lower=True)
-        self.slug = unique_slugify(self.__unicode__())
+        unique_slugify(self, self.__unicode__())
         super(Player, self).save(**kwargs)
 
     def __unicode__(self):
@@ -108,8 +107,7 @@ class Venue(models.Model):
         return reverse('members:venue_detail', args=[self.slug])
 
     def save(self, **kwargs):
-        unique_slugify = UniqueSlugify(to_lower=True)
-        self.slug = unique_slugify(self.__unicode__())
+        unique_slugify(self, self.__unicode__())
         super(Venue, self).save(**kwargs)
 
     def __unicode__(self):
@@ -163,8 +161,7 @@ class Committee(models.Model):
         return reverse('members:committee_detail', args=[self.slug])
 
     def save(self, **kwargs):
-        unique_slugify = UniqueSlugify(to_lower=True)
-        self.slug = unique_slugify(self.__unicode__())
+        unique_slugify(self, self.__unicode__())
         super(Committee, self).save(**kwargs)
 
     def __unicode__(self):
