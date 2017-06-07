@@ -1,5 +1,6 @@
 {% extends "members/committee_list.html" %}
 
+{% load members_tags %}
 {% load django_bootstrap_breadcrumbs %}
 
 {% block breadcrumbs %}
@@ -7,8 +8,14 @@
     {% breadcrumb object "members:committee_detail" object.slug %}
 {% endblock %}
 
+{% block messages %}
+{% endblock %}
+
 {% block data %}
     <h1>{{ object }}</h2>
+
+    {% messages %}
+
     <table class="table table-bordered">
         <thead>
             <tr>

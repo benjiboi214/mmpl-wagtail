@@ -18,3 +18,10 @@ def navigation_sidebar(context):
     return {
         'request': context['request'],
     }
+
+
+@register.inclusion_tag('members/tags/messages.html', takes_context=True)
+def messages(context):
+    return {
+        'messages': context['messages'],
+    }

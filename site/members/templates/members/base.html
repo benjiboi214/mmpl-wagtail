@@ -24,17 +24,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8">
+
                         {% block messages %}
-                            {% if messages %}
-                                <ul class="messages">
-                                    {% for message in messages %}
-                                        <div class="alert alert-success fade in" id="message_{{ forloop.counter }}">
-                                            <a class="close" data-dismiss="alert" href="#">×</a> {{ message }}
-                                        </div>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        {% endblock messages %}
+                            {% messages %}
+                        {% endblock %}
 
                         {% block data %}
                         {% endblock data %}
