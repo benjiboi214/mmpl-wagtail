@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     'home',
     'search',
     'members',
+
     'address',
     'django_bootstrap_breadcrumbs',
     'debug_toolbar',
+    'crispy_forms',
 
     'wagtail.wagtailforms',
     'wagtail.wagtailredirects',
@@ -153,15 +155,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
+# Crispy settings
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
 # Breadcrumb settings
 BREADCRUMBS_TEMPLATE = os.path.join(BASE_DIR, 'members/templates/members/tags/breadcrumbs.html')
+
 
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "Melbourne Metropolitan Pool League"
 
-
-# Email Settings
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

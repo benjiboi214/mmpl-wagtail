@@ -1,6 +1,7 @@
 {% extends "members/committee_list.html" %}
 
 {% load django_bootstrap_breadcrumbs %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     {{ block.super }}
@@ -16,7 +17,7 @@
     <h1>Add Committee</h1>
     <form action="" method="post">
         {% csrf_token %}
-        {{ form }}
+        {{ form|crispy }}
         <input type="submit" value="Submit" />
     </form>
 {% endblock %}

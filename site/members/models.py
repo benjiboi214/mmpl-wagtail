@@ -20,33 +20,44 @@ class Player(models.Model):
 
     firstname = models.CharField(max_length=64, verbose_name='First Name')
     lastname = models.CharField(max_length=64, verbose_name='Last Name')
-    dob = models.DateField(verbose_name='Date of Birth')
-    email = models.EmailField(verbose_name='Email')
+    dob = models.DateField(
+        verbose_name='Date of Birth',
+        null=True,
+        blank=True)
+    email = models.EmailField(verbose_name='Email', blank=True)
     phone = models.CharField(
         max_length=15,
         verbose_name='Phone Number',
         blank=True)
     address = AddressField(
         related_name='player',
-        verbose_name='Address')
+        verbose_name='Address',
+        null=True,
+        blank=True)
     umpire_accreditation = models.CharField(
         max_length=1,
         choices=ACCREDITATION_CHOICES,
         default='N',
         verbose_name='Umpire Accreditation')
-    joined = models.DateField(default=date.today, verbose_name='Join Date')
-    updated = models.DateField(auto_now=True, verbose_name='Last Updated')
+    joined = models.DateField(
+        default=date.today,
+        verbose_name='Join Date')
+    updated = models.DateField(
+        auto_now=True,
+        verbose_name='Last Updated')
     media_release = models.BooleanField(
         default=False,
         verbose_name='Media Release')
     media_release_date = models.DateField(
         verbose_name='Media Release Signed Date',
+        null=True,
         blank=True)
     vanda_policy = models.BooleanField(
         default=False,
         verbose_name='Violence and Aggression Policy Agreement')
     vanda_policy_date = models.DateField(
         verbose_name='Violence and Aggression Policy Agreement Date',
+        null=True,
         blank=True)
     slug = models.SlugField(blank=True)
 

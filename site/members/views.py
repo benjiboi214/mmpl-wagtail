@@ -7,6 +7,7 @@ from django.views.generic import ListView, DetailView, TemplateView, \
 from django.core import serializers
 
 from members.models import Player, Venue, Committee
+from members.forms import PlayerForm, VenueForm, CommitteeForm
 
 # Create your views here.
 
@@ -22,30 +23,15 @@ class ActionMixin(object):
         return super(ActionMixin, self).form_valid(form)
 
 
-class PlayerActionMixin(ActionMixin):
-    fields = [
-        'firstname',
-        'lastname',
-        'dob',
-        'email',
-        'phone',
-        'address',
-        'umpire_accreditation',
-        'joined',
-        'media_release',
-        'media_release_date',
-        'vanda_policy',
-        'vanda_policy_date'
-    ]
-
-
-class PlayerCreateView(LoginRequiredMixin, PlayerActionMixin, CreateView):
+class PlayerCreateView(LoginRequiredMixin, ActionMixin, CreateView):
     model = Player
+    form_class = PlayerForm
     success_msg = 'Player created!'
 
 
-class PlayerUpdateView(LoginRequiredMixin, PlayerActionMixin, UpdateView):
+class PlayerUpdateView(LoginRequiredMixin, ActionMixin, UpdateView):
     model = Player
+    form_class = PlayerForm
     success_msg = 'Player updated'
 
 
@@ -65,29 +51,13 @@ class PlayerDetailView(LoginRequiredMixin, DetailView):
     template = "members/player_detail.html"
 
 
-# class PlayerUpdateView(LoginRequiredMixin, PlayerActionMixin, UpdateView):
-#     model = Player
-#     success_msg = 'Player updated!'
-#     template = "members/player_update.html"
-
-
-class VenueActionMixin(ActionMixin):
-    fields = [
-        'name',
-        'address',
-        'tables',
-        'phone',
-        'email',
-        'contact_name'
-    ]
-
-
-class VenueCreateView(LoginRequiredMixin, VenueActionMixin, CreateView):
+class VenueCreateView(LoginRequiredMixin, ActionMixin, CreateView):
     model = Venue
+    form_class = VenueForm
     success_msg = 'Venue created!'
 
 
-class VenueUpdateView(LoginRequiredMixin, VenueActionMixin, UpdateView):
+class VenueUpdateView(LoginRequiredMixin, ActionMixin, UpdateView):
     model = Venue
     success_msg = 'Venue updated'
 
@@ -95,7 +65,6 @@ class VenueUpdateView(LoginRequiredMixin, VenueActionMixin, UpdateView):
 class VenueDeleteView(LoginRequiredMixin, DeleteView):
     model = Venue
     success_url = reverse_lazy('members:venue_list')
-
 
 
 class VenueListView(LoginRequiredMixin, ListView):
@@ -108,25 +77,13 @@ class VenueDetailView(LoginRequiredMixin, DetailView):
     template = "members/venue_detail.html"
 
 
-class CommitteeActionMixin(ActionMixin):
-    fields = [
-        'president',
-        'vice_president',
-        'treasurer',
-        'statistician',
-        'secretary',
-        'assistant_secretary',
-        'start_date',
-        'end_date'
-    ]
-
-
-class CommitteeCreateView(LoginRequiredMixin, CommitteeActionMixin, CreateView):
+class CommitteeCreateView(LoginRequiredMixin, ActionMixin, CreateView):
     model = Committee
+    form_class = CommitteeForm
     success_msg = 'Committee created!'
 
 
-class CommitteeUpdateView(LoginRequiredMixin, CommitteeActionMixin, UpdateView):
+class CommitteeUpdateView(LoginRequiredMixin, ActionMixin, UpdateView):
     model = Committee
     success_msg = 'Committee updated'
 
