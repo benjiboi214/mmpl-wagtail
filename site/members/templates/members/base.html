@@ -3,10 +3,14 @@
 {% load members_tags %}
 {% load django_bootstrap_breadcrumbs %}
 
+{% block title %}
+    MMPL | Members
+{% endblock title %}
+
 {% block breadcrumbs %}
     {% breadcrumb "MMPL" "/" %}
     {% breadcrumb "Members" "members_base" %}
-{% endblock %}
+{% endblock breadcrumbs %}
 
 {% block content %}
     {{ block.super }}
@@ -46,4 +50,4 @@
         </div>
     </div>
 
-{% endblock %}
+{% endblock content %}

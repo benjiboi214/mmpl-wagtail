@@ -3,6 +3,11 @@
 {% load members_tags %}
 {% load django_bootstrap_breadcrumbs %}
 
+{% block title %}
+    {{ block.super }}
+     | {{ object }}
+{% endblock title %}
+
 {% block breadcrumbs %}
     {{ block.super }}
     {% breadcrumb object "members:venue_detail" object.slug %}

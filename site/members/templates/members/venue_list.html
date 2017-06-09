@@ -2,6 +2,11 @@
 
 {% load django_bootstrap_breadcrumbs %}
 
+{% block title %}
+    {{ block.super }}
+     | Venues
+{% endblock title %}
+
 {% block breadcrumbs %}
     {{ block.super }}
     {% breadcrumb 'Venues' 'members:venue_list' %}
@@ -34,6 +39,8 @@
       	<h3 class="widget-title">Actions</h3>
         <ul>
           <li><a href="{% url 'members:venue_add' %}"></i> Add</a></li>
+          <li><a href="#"></i> Bulk Add</a></li>
+          <li><a href="#"></i> Search</a></li>
         </ul>
     </div>
 {% endblock %}

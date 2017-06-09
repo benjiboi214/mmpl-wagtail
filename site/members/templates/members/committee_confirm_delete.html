@@ -2,6 +2,11 @@
 
 {% load django_bootstrap_breadcrumbs %}
 
+{% block title %}
+    {{ block.super }}
+     | Delete {{ object }}
+{% endblock title %}
+
 {% block breadcrumbs %}
     {{ block.super }}
     {% breadcrumb "Delete Committee" "" %}

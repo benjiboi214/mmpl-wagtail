@@ -2,6 +2,10 @@
 
 {% load django_bootstrap_breadcrumbs %}
 
+{% block title %}
+    Committees
+{% endblock title %}
+
 {% block breadcrumbs %}
     {{ block.super }}
     {% breadcrumb 'Committees' 'committee_list' %}
@@ -36,6 +40,8 @@
       	<h3 class="widget-title">Actions</h3>
         <ul>
           <li><a href="{% url 'members:committee_add' %}"></i> Add</a></li>
+          <li><a href="#"></i> Bulk Add</a></li>
+          <li><a href="#"></i> Search</a></li>
         </ul>
     </div>
 {% endblock %}

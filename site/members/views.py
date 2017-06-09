@@ -57,6 +57,7 @@ class PlayerDeleteView(LoginRequiredMixin, DeleteView):
 class PlayerListView(LoginRequiredMixin, ListView):
     model = Player
     template = "members/player_list.html"
+    # Add Pagination
 
 
 class PlayerDetailView(LoginRequiredMixin, DetailView):
