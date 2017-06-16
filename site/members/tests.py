@@ -16,6 +16,7 @@ from django.test import TestCase
 # Views
 # Test all Views
 # Test Action mixin
+# Test deleting object with existing FK connection
 
 # urls
 # Test slug passing to models

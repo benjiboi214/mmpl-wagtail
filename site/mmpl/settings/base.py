@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 from __future__ import absolute_import, unicode_literals
 import os
 from django.core.exceptions import ImproperlyConfigured
+from django.contrib.messages import constants as messages
 
 
 def get_env_variable(var_name):
@@ -166,6 +167,15 @@ BREADCRUMBS_TEMPLATE = os.path.join(BASE_DIR, 'members/templates/members/tags/br
 
 WAGTAIL_SITE_NAME = "Melbourne Metropolitan Pool League"
 
+
+# Messages settings
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug alert-debug',
+    messages.INFO: 'info alert-info',
+    messages.SUCCESS: 'success alert-success',
+    messages.WARNING: 'warning alert-warning',
+    messages.ERROR: 'error alert-error',
+}
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
