@@ -1,0 +1,53 @@
+{% extends "members/base.html" %}
+{% load i18n %}
+{% load members_tags %}
+{% load crispy_forms_tags %}
+
+{% block extra_js %}
+<script type="text/html" id="member-template">
+  <div id="member-__prefix__">
+      {{ formset.empty_form.as_p }}
+  </div>
+</script>
+<script>
+  $(function() {
+      $('.add-member').click(function(ev){
+          ev.preventDefault();
+          var count = parseInt($('#id_members-TOTAL_FORMS').attr('value'), 10);
+          console.log(count)
+          var tmplMarkup = $('#member-template').html();
+          var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count)
+          console.log(compiledTmpl);
+          $('div.members').append(compiledTmpl);
+          $('#id_members-TOTAL_FORMS').attr('value', count + 1);
+      });
+  });
+</script>
+{% endblock %}
+
+{% block data %}
+<h1>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Committee</h1>
+<form action="" method="post">
+  {% csrf_token %}
+  {{ formset.management_form }}
+
+  <legend>Committee</legend>
+  <div class="committee">
+    {{ form.as_p }}
+  </div>
+
+  <legend>
+    <div class="pull-right"><a href="#" class="btn btn-inverse add-member"><i class="icon-plus icon-white"></i> Add Member</a></div>
+    Members
+  </legend>
+  <div class="members form-inline">
+    {% for form in forms %}
+      {{ form }}
+    {% endfor %}
+  </div>
+  <div class="submit-row">
+    <button type="submit" class="submit"> Add Committee</button>
+  </div>
+
+</form>
+{% endblock %}
