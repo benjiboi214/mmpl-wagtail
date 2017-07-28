@@ -29,30 +29,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td> President </td>
-                <td> {{ object.president }} </td>
-            </tr>
-            <tr>
-                <td> Vice President </td>
-                <td> {{ object.vice_president }} </td>
-            </tr>
-            <tr>
-                <td> Treasurer </td>
-                <td> {{ object.treasurer }} </td>
-            </tr>
-            <tr>
-                <td> Statistician </td>
-                <td> {{ object.statistician }} </td>
-            </tr>
-            <tr>
-                <td> Secretary </td>
-                <td> {{ object.secretary }} </td>
-            </tr>
-            <tr>
-                <td> Assistant Secretary </td>
-                <td> {{ object.assistant_secretary }} </td>
-            </tr>
+            {% for member in object.committee_members %}
+                <tr>
+                    <td> {{ member.get_position_display }} </td>
+                    <td> {{ member.player }} </td>
+                </tr>
+            {% endfor %}
             <tr>
                 <td> Election Date </td>
                 <td> {{ object.start_date }} </td>

@@ -16,8 +16,6 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th> President </th>
-                <th> Vice President </th>
                 <th> Start Date </th>
                 <th> End Date </th>
             </tr>
@@ -25,10 +23,8 @@
         <tbody>
             {% for committee in object_list %}
             <tr>
-                <td> <a href="{{ committee.get_absolute_url }}">{{ committee.president }}</a> </td>
-                <td> {{ committee.vice_president }} </td>
-                <td> {{ committee.start_date }} </td>
-                <td> {{ committee.end_date }} </td>
+                <td> <a href="{{ committee.get_absolute_url }}">{{ committee.start_date }}</a> </td>
+                <td> <a href="{{ committee.get_absolute_url }}">{{ committee.end_date }}</a> </td>
             </tr>
             {% endfor %}
         </tbody>

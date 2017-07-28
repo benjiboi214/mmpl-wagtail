@@ -1,15 +1,15 @@
 from django.contrib import admin
-from .models import Player, Notifications, Venue, Committee
+from .models import Player, Notification, Venue, Committee
 
 
-class NotificationsInline(admin.StackedInline):
-    model = Notifications
+class NotificationInline(admin.StackedInline):
+    model = Notification
     extra = 0
 
 
 class PlayerAdmin(admin.ModelAdmin):
     inlines = [
-        NotificationsInline
+        NotificationInline
     ]
     list_display = ('firstname', 'lastname', 'email', 'phone')
     search_fields = ['firstname', 'lastname']
@@ -21,7 +21,7 @@ class VenueAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 class CommitteeAdmin(admin.ModelAdmin):
-    list_display =  ('president', 'start_date', 'end_date')
+    list_display =  ('start_date', 'end_date')
 
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Venue, VenueAdmin)

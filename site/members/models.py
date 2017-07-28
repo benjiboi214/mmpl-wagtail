@@ -73,7 +73,7 @@ class Player(models.Model):
         return "%s %s" % (self.firstname, self.lastname)
 
 
-class Notifications(models.Model):
+class Notification(models.Model):
     '''Model for tracking notifications preferences for various parts of the
     website.'''
     NOTIFICATION_CHOICES = (
@@ -111,7 +111,9 @@ class Venue(models.Model):
         blank=True,
         verbose_name='Contact Name')
     # Has hours of operation https://github.com/arteria/django-openinghours
+    # Has picture of venue
     slug = models.SlugField(blank=True)
+
 
     def get_absolute_url(self):
         from django.urls import reverse
@@ -129,36 +131,6 @@ class Committee(models.Model):
     '''Model for recording Committee membership. Creating a new entry per year
     for each new committee voted in will serve as a historical record of
     members service, as well as presenting current committee'''
-    president = models.ForeignKey(
-        Player,
-        on_delete=models.PROTECT,
-        related_name='president',
-        verbose_name='President')
-    vice_president = models.ForeignKey(
-        Player,
-        on_delete=models.PROTECT,
-        related_name='vice_president',
-        verbose_name='Vice President')
-    treasurer = models.ForeignKey(
-        Player,
-        on_delete=models.PROTECT,
-        related_name='treasurer',
-        verbose_name='Treasurer')
-    statistician = models.ForeignKey(
-        Player,
-        on_delete=models.PROTECT,
-        related_name='statistician',
-        verbose_name='Statistician')
-    secretary = models.ForeignKey(
-        Player,
-        on_delete=models.PROTECT,
-        related_name='secretary',
-        verbose_name='Secretary')
-    assistant_secretary = models.ForeignKey(
-        Player,
-        on_delete=models.PROTECT,
-        related_name='assistant_secretary',
-        verbose_name='Assistant Secretary')
     start_date = models.DateField(
         default=date.today,
         verbose_name='Election Date')
@@ -175,9 +147,38 @@ class Committee(models.Model):
         unique_slugify(self, self.__unicode__())
         super(Committee, self).save(**kwargs)
 
+    @property
+    def committee_members(self):
+        return self.members.all()
+
     def __unicode__(self):
-        return "%s: %s-%s" % (
-            self.president,
+        return "%s-%s" % (
             self.start_date.year,
-            self.end_date.year
-        )
+            self.end_date.year)
+
+
+class CommitteeMember(models.Model):
+    POSITION_CHOICES = (
+        ('PR', 'President'),
+        ('VP', 'Vice President'),
+        ('TR', 'Treasurer'),
+        ('ST', 'Statistician'),
+        ('SE', 'Secretary'),
+        ('AS', 'Assistant Secretary'),
+    )
+    player = models.ForeignKey(
+        Player,
+        on_delete=models.PROTECT,
+        related_name='committee',
+        verbose_name='Member')
+    committee = models.ForeignKey(
+        Committee,
+        on_delete=models.CASCADE,
+        related_name='members',
+        verbose_name='Committee'
+    )
+    position = models.CharField(
+        max_length=2,
+        choices=POSITION_CHOICES,
+        verbose_name='Committee Position'
+    )

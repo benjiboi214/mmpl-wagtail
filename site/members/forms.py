@@ -1,7 +1,8 @@
 from django import forms
+from django.forms.models import inlineformset_factory
 
-from members.models import Player, Venue, Committee
-from members.validators import validate_policy_date
+from members.models import Player, Venue, Committee, CommitteeMember
+from members.validators import validate_policy_date, validate_positions_filled
 
 from crispy_forms.helper import FormHelper
 
@@ -81,12 +82,6 @@ class CommitteeForm(forms.ModelForm):
     class Meta:
         model = Committee
         fields = [
-            'president',
-            'vice_president',
-            'treasurer',
-            'statistician',
-            'secretary',
-            'assistant_secretary',
             'start_date',
             'end_date'
         ]
@@ -94,3 +89,27 @@ class CommitteeForm(forms.ModelForm):
             'start_date': DateInput(),
             'end_date': DateInput()
         }
+
+
+class CommitteeInlineFormSet(forms.BaseInlineFormSet):
+    def clean(self):
+        super(CommitteeInlineFormSet, self).clean()
+        positions = []
+        for form in self.forms:
+            try:
+                positions += form.cleaned_data['position']
+            except KeyError:
+                continue
+        ##validate_positions_filled(
+        ##    CommitteeMember.POSITION_CHOICES,
+        ##    positions
+        ##)
+
+
+CommitteeMemberFormSet = inlineformset_factory(
+    Committee,
+    CommitteeMember,
+    fields=('player', 'position'),
+    extra=0,
+    min_num=1,
+    formset=CommitteeInlineFormSet)
