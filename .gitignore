@@ -10,4 +10,4 @@ theming-templates/
 patterns/
 **/settings/*_secrets.py
 manage-dev.py
-migrations/*
+*/migrations/*
