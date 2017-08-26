@@ -1,3 +1,5 @@
+import datetime
+
 from django import template
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -169,6 +171,14 @@ def blog_pagination(context):
         'page': context['page'],
         'request': context['request']
     }
+
+
+@register.filter
+def openhour_time(value):
+    hour = int(value[:2])
+    minute = int(value[2:])
+    date = datetime.time(hour, minute)
+    return date.strftime("%H:%M")
 
 
 # Social Snippet

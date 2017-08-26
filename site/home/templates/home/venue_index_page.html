@@ -1,0 +1,43 @@
+{% extends "home/base.html" %}
+
+{% load home_tags %}
+{% load static %}
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="hero-area">
+        <div class="page-header" style="background-image: url({% static 'img/placehold-index.jpg' %}")>
+            <div><div><span>Venues</span></div></div>
+        </div>
+    </div>
+
+    {% breadcrumbs %}
+
+    <div class="main" role="main">
+    	<div id="content" class="content full">
+        <div class="container">
+        	<div class="row">
+            <div class="col-md-8">
+              <ul class="events-list">
+
+              	<li class="event-list-item">
+                	<a href="/winter-2017/venues/dan-oconnell-hotel/" class="btn btn-default pull-right">Details</a>
+                	<a href="event-single.html" class="img-thumbnail"><img src="http://placehold.it/600x400&amp;text=IMAGE+PLACEHOLDER" alt=""></a>
+                    <h3><a href="event-single.html">Dan O'Connell Hotel</a></h3>
+                    <div class="meta-data alt">
+                    	<div><a href="venue-single.html"><i class="fa fa-map-marker"></i> 225 Canning St, Carlton</a></div>
+                        <div><i class="fa fa-calendar"></i> 7 Days</div>
+                    </div>
+                    <a href="event-single.html" class="basic-link">Book Online</a>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock %}

@@ -16,7 +16,6 @@ from wagtail.wagtailsnippets.models import register_snippet
 from wagtail.wagtailforms.models import AbstractEmailForm, AbstractFormField
 from wagtail.wagtailforms.forms import FormBuilder
 
-
 from wagtail.wagtailcore.blocks import TextBlock, StructBlock, StreamBlock, \
     FieldBlock, CharBlock, RichTextBlock, RawHTMLBlock
 from wagtail.wagtailimages.blocks import ImageChooserBlock
@@ -301,6 +300,54 @@ class AboutPageContactItem(LinkFields, Orderable):
         FieldPanel('icon'),
         PageChooserPanel('link_page'),
     ]
+
+
+class SeasonPage(Page):
+
+    class Meta:
+        verbose_name = "Season Page"
+
+
+SeasonPage.content_panels = [
+    FieldPanel('title', classname='full title'),
+]
+
+
+class VenuePage(Page):
+    '''Venue Page object for adding and displaying venues as a part
+    of the new season centric layout of the website.'''
+    # TODO Link Venue Page as a child of Venue Index
+    # TODO Add help text to admin page to make it obvious what is happening
+
+    blurb = models.CharField(max_length=500, blank=True)
+
+    @property
+    def photos(self):
+        return self.venue_details.photos.all().order_by('-photo')
+
+    @property
+    def open_hours(self):
+        return self.venue_details.openhours.all().order_by('open_day')
+
+    class Meta:
+        verbose_name = "Venue Page"
+
+
+VenuePage.content_panels = [
+    FieldPanel('title', classname='full title'),
+    FieldPanel('blurb'),
+]
+
+
+class VenueIndexPage(Page):
+
+    class Meta:
+        verbose_name = "Venue Index Page"
+
+
+VenueIndexPage.content_panels = [
+    FieldPanel('title', classname='full title'),
+]
 
 
 class AboutPage(MenuPage):
