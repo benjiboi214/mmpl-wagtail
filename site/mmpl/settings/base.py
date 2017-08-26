@@ -115,6 +115,15 @@ DATABASES = {
     }
 }
 
+# Cache
+# https://docs.djangoproject.com/en/1.11/topics/cache/
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'mmpl_cache',
+    }
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
