@@ -6,6 +6,7 @@ from wagtail.wagtailcore.signals import page_published
 
 
 class VenuesConfig(AppConfig):
+    '''Config method for naming app and registering signals.'''
     name = 'venues'
 
     def ready(self):
