@@ -1,0 +1,12 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<li class="event-list-item">
+  <a href="{% pageurl venue %}" class="btn btn-default pull-right">Details</a>
+  <a href="{% pageurl venue %}" class="img-thumbnail"><img src="{{ venue.photo.photo.url }}" alt=""></a>
+    <h3><a href="{% pageurl venue %}">{{ venue.title }}</a></h3>
+    <div class="meta-data alt">
+      <div><a href="{% pageurl venue %}"><i class="fa fa-map-marker"></i> {{ address }}</a></div>
+        <div><i class="fa fa-calendar"></i> {{ open_days }} days</div>
+    </div>
+    <a href="{{ venue.venue_details.gmaps_url }}" class="basic-link">Google Maps</a>
+</li>

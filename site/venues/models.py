@@ -34,7 +34,11 @@ class VenueDetails(models.Model):
 
 class OpenHoursManager(models.Manager):
     def create_openhours(self, venue, day):
-        open_hours = self.create(venue=venue)
+        open_hours_id = (str(day['open']['day']) + day['open']['time'] +
+                         str(day['close']['day']) + day['close']['time'])
+        open_hours, created = self.update_or_create(
+            uuid=open_hours_id,
+            venue=venue)
         open_hours.open_day = day['open']['day']
         open_hours.open_time = day['open']['time']
         open_hours.close_day = day['close']['day']
@@ -53,6 +57,7 @@ class OpenHours(models.Model):
         ('4', 'Thursday'),
         ('5', 'Friday'),
         ('6', 'Saturday'))
+    uuid = models.CharField(max_length=20, primary_key=True)
     venue = models.ForeignKey(
         VenueDetails,
         related_name='openhours',

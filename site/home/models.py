@@ -326,6 +326,10 @@ class VenuePage(Page):
         return self.venue_details.photos.all().order_by('-photo')
 
     @property
+    def photo(self):
+        return self.venue_details.photos.all().order_by('photo')[0]
+
+    @property
     def open_hours(self):
         return self.venue_details.openhours.all().order_by('open_day')
 
@@ -340,6 +344,32 @@ VenuePage.content_panels = [
 
 
 class VenueIndexPage(Page):
+
+    @property
+    def venues(self):
+        venues = VenuePage.objects.live().child_of(self)
+
+        venues = venues.order_by('title')
+        return venues
+
+    def get_context(self, request):
+        # Get blogs
+        venues = self.venues
+
+        # Pagination
+        page = request.GET.get('page')
+        paginator = Paginator(venues, 20)  # Show 10 blogs per page
+        try:
+            venues = paginator.page(page)
+        except PageNotAnInteger:
+            venues = paginator.page(1)
+        except EmptyPage:
+            venues = paginator.page(paginator.num_pages)
+
+        # Update template context
+        context = super(VenueIndexPage, self).get_context(request)
+        context['paginator'] = venues
+        return context
 
     class Meta:
         verbose_name = "Venue Index Page"

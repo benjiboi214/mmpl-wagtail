@@ -109,8 +109,8 @@ def blog_page_media_item(context):
     }
 
 
-@register.inclusion_tag('home/tags/blog_index_media_item.html', takes_context=True)
-def blog_index_media_item(context, blog):
+@register.inclusion_tag('home/tags/blog_index_item.html', takes_context=True)
+def blog_index_item(context, blog):
     self = context.get('self')
     try:
         media_item = BlogPageMediaItem.objects.get(page=blog)
@@ -132,6 +132,20 @@ def blog_index_media_item(context, blog):
         'media_item': media_item,
         'supported_sites': supported_sites,
         'request': context['request'],
+    }
+
+
+@register.inclusion_tag('home/tags/venue_index_item.html', takes_context=True)
+def venue_index_item(context, venue):
+    address = venue.venue_details.address.split(',')
+    short_address = address[0] + ',' + address[1]
+    open_hours = venue.open_hours
+    open_days = str(len(open_hours))
+    return {
+        'address': short_address,
+        'open_days': open_days,
+        'venue': venue,
+        'request': context['request']
     }
 
 

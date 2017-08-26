@@ -21,7 +21,7 @@
                         <div class="posts-listing">
                             <!-- List Item -->
                             {% for blog in paginator %}
-                                {% include "home/includes/blog_index_item.html" %}
+                                {% blog_index_item blog=blog %}
                             {% endfor %}
                         </div>
 
