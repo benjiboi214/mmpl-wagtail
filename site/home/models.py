@@ -26,6 +26,15 @@ from modelcluster.fields import ParentalKey
 from wagtailmenus.models import MenuPage
 
 
+# TODO: Split out Link functions
+# # Singular classes for individual uses.
+# # Shared Class to pull logic together for multiple link types.
+# TODO: Create Document Handling Page, utilize above for document link, then display
+# TODO: Create News Handling object, utilize above for page link, then display.
+# TODO: Clean up home page garbage.
+# TODO: Create Menu Handling objects? To pull together
+
+
 # Global Streamfield Definitions
 class PullQuoteBlock(StructBlock):
     quote = TextBlock("quote title")
@@ -302,6 +311,23 @@ class AboutPageContactItem(LinkFields, Orderable):
     ]
 
 
+class Competition(models.Model):
+    page = ParentalKey('home.SeasonPage', related_name='competitions')
+    title = models.CharField(
+        max_length=50,
+        verbose_name="Division Name (Tab Display)"
+    )
+    poolstat_url = models.CharField(
+        max_length=255,
+        verbose_name="Poolstat Competition URL (Ladder Link)")
+
+
+    panels = [
+        FieldPanel('title'),
+        FieldPanel('poolstat_url')
+    ]
+
+
 class SeasonPage(Page):
 
     class Meta:
@@ -310,6 +336,10 @@ class SeasonPage(Page):
 
 SeasonPage.content_panels = [
     FieldPanel('title', classname='full title'),
+    InlinePanel(
+        'competitions',
+        label="Competitions"
+    )
 ]
 
 
