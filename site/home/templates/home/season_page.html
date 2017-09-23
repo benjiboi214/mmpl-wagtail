@@ -8,11 +8,7 @@
 {% block content %}
     {{ block.super }}
 
-    <div class="hero-area">
-        <div class="page-header" style="background-image: url({% static 'img/placehold-index.jpg' %}")>
-            <div><div><span>{{ self.title }}</span></div></div>
-        </div>
-    </div>
+    {% index_image %}
 
     {% breadcrumbs %}
 
