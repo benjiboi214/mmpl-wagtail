@@ -52,6 +52,8 @@ def index_image(context):
         blog_index = self
     elif self.content_type.model == 'aboutpage':
         blog_index = self
+    elif self.content_type.model == 'seasonpage':
+        blog_index = self
     else:
         blog_index = self.get_parent().specific
     return {
