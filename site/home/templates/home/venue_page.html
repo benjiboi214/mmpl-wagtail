@@ -29,28 +29,33 @@ src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ self.venue_details
                         <div class="tabs exhibition-details">
                             <ul class="nav nav-tabs">
                                 <li class="active"> <a data-toggle="tab" href="#detailtab"> Details </a> </li>
-                                <li> <a data-toggle="tab" href="#gallerytab"> Gallery </a> </li>
+                                {% if self.photos %}<li> <a data-toggle="tab" href="#gallerytab"> Gallery </a> </li>{% endif %}
                             </ul>
                             <div class="tab-content">
                                 <div id="detailtab" class="tab-pane active">
-                                  <table class="table table-striped">
-                                    <thead>
-                                      <tr>
-                                        <th>Open Hours</th>
-                                        <th>Open</th>
-                                        <th>Close</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {% for day in self.open_hours %}
-                                      <tr>
-                                        <td>{{ day.get_open_day_display }}</td>
-                                        <td>{{ day.open_time|openhour_time }}</td>
-                                        <td>{{ day.close_time|openhour_time }}</td>
-                                      </tr>
-                                      {% endfor %}
-                                    </tbody>
-                                  </table>
+
+                                  {% if self.open_hours %}
+                                    <table class="table table-striped">
+                                      <thead>
+                                        <tr>
+                                          <th>Open Hours</th>
+                                          <th>Open</th>
+                                          <th>Close</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for day in self.open_hours %}
+                                        <tr>
+                                          <td>{{ day.get_open_day_display }}</td>
+                                          <td>{{ day.open_time|openhour_time }}</td>
+                                          <td>{{ day.close_time|openhour_time }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                      </tbody>
+                                    </table>
+                                  {% endif %}
+
+
                                 	<ul class="angles">
                                     	<li>{{ self.venue_details.address }}</li>
                                     	<li>{{ self.venue_details.phone }}</li>
@@ -61,13 +66,15 @@ src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ self.venue_details
                                     </div>
                                 </div>
 
-                                <div id="gallerytab" class="tab-pane">
-                                	<ul class="gallery-grider">
-                                      {% for photo in self.photos %}
-                                        <li class="format-image"><a href="{{ photo.photo.url }}" data-rel="prettyPhoto[gallery]" class="media-box"><img src="{{ photo.photo.url }}" alt=""></a></li>
-                                      {% endfor %}
-                                    </ul>
-                                </div>
+                                {% if self.photos %}
+                                  <div id="gallerytab" class="tab-pane">
+                                    <ul class="gallery-grider">
+                                        {% for photo in self.photos %}
+                                          <li class="format-image"><a href="{{ photo.photo.url }}" data-rel="prettyPhoto[gallery]" class="media-box"><img src="{{ photo.photo.url }}" alt=""></a></li>
+                                        {% endfor %}
+                                      </ul>
+                                  </div>
+                                {% endif %}
                            	</div>
                        	</div>
                   	</div>
