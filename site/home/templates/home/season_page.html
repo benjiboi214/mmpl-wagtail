@@ -1,7 +1,9 @@
 {% extends "home/base.html" %}
 
 {% load home_tags %}
+{% load menu_tags %}
 {% load static %}
+{% load wagtailcore_tags %}
 
 {% block content %}
     {{ block.super }}
@@ -20,65 +22,48 @@
           <div class="container">
             <div class="row">
               <div class="col-md-9 col-sm-12">
-                	<div class="row">
-                    <div class="col-md-12 col-sm-12">
-                      <h3 class="widget-title">Results</h3>
-                      <p>Navigate the tabs below to find all the latest stats on teams in the MMPL. Results are updated weekly on Thursday.</p>
-
-                      {% include "home/includes/competition_tabs.html" with competitions=self.competitions.all %}
-
+                <div class="row">
+                  <div class="col-md-12 col-sm-12">
+                    <div class="posts-listing">
+                      {% for blog in self.news_item.get.primary %}
+                          {% blog_hero_item blog=blog %}
+                      {% endfor %}
                     </div>
                   </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 col-sm-12">
+                    <h3 class="widget-title">Results</h3>
+                    <p>Navigate the tabs below to find all the latest stats on teams in the MMPL. Results are updated weekly on Thursday.</p>
+
+                    {% include "home/includes/competition_tabs.html" with competitions=self.competitions.all %}
+
+                  </div>
+                </div>
                 <hr/>
-                	<div class="row">
-                    <div class="col-md-12 col-sm-12">
-                      <h3 class="widget-title">News</h3>
+                <div class="row">
+                  <div class="col-md-12 col-sm-12">
+                    <h3 class="widget-title">News</h3>
 
-                      <div class="posts-listing">
-                        <div class="list-item blog-list-item format-standard">
-                          <div class="row">
-                            <div class="col-md-4 col-sm-4">
-                              <div class="post-media">
-                                <a href="blog-single.html" class="img-thumbnail"><img src="http://placehold.it/600x500&amp;text=IMAGE+PLACEHOLDER" alt="" class="post-thumb"></a>
-                              </div>
-                            </div>
-                            <div class="col-md-8 col-sm-8">
-                              <h3><a href="blog-single.html">Champion of Champions</a></h3>
-                              <div class="meta-data alt">
-                              	<div><i class="fa fa-clock-o"></i> July 20, 2017</div>
-                              	<div><i class="fa fa-archive"></i> <a href="#">CofC</a>, <a href="#">Tournaments</a></div>
-                             	</div>
-                              <div class="list-item-excerpt">
-                                  <p>Overall, the Champion of Champions tournament ran very smoothly! Although there were some suprise non qualifiers, click here to find out who!</p>
-                              </div>
-                              <div class="post-actions">
-                                  <a href="blog-single.html" class="btn btn-primary">Continue reading</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
+                    <div class="posts-listing">
+                      {% for blog in self.news_item.get.secondary %}
+                          {% blog_index_item blog=blog %}
+                      {% endfor %}
+                      <ul class="pager pull-right">
+                          <li><a href="{% pageurl self.news_item.get.link_page %}">More →</a></li>
+                      </ul>
                     </div>
                   </div>
+                  
+                </div>
               </div>
               <div class="col-md-3 col-sm-12">
-                <div class="widget sidebar-widget widget_categories box-style1">
-                	<h3 class="widget-title">Resources</h3>
-                    <ul>
-                    	<li><a href="#"></i> Calendar</a></li>
-                    	<li><a href="#"></i> Draw</a></li>
-                    	<li><a href="#"></i> Teams and Captains</a></li>
-                      <li><a href="/winter-2017/venues/"></i> Venues</a></li>
-                    	<li><a href="#"></i> Scoresheet</a></li>
-                    	<li><a href="#"></i> Registration Forms</a></li>
-                    </ul>
-                </div>
+
+                {% flat_menu 'season_sidebar' template='home/includes/menus/season_sidebar.html' %}
+              
               </div>
             </div>
           </div>
-
-
         </div>
     </div>
 

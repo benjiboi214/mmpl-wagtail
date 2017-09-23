@@ -109,8 +109,7 @@ def blog_page_media_item(context):
     }
 
 
-@register.inclusion_tag('home/tags/blog_index_item.html', takes_context=True)
-def blog_index_item(context, blog):
+def blog_item(context, blog):
     self = context.get('self')
     try:
         media_item = BlogPageMediaItem.objects.get(page=blog)
@@ -133,6 +132,16 @@ def blog_index_item(context, blog):
         'supported_sites': supported_sites,
         'request': context['request'],
     }
+
+
+@register.inclusion_tag('home/tags/blog_index_item.html', takes_context=True)
+def blog_index_item(context, blog):
+    return blog_item(context, blog)
+
+
+@register.inclusion_tag('home/tags/blog_hero_item.html', takes_context=True)
+def blog_hero_item(context, blog):
+    return blog_item(context, blog)
 
 
 @register.inclusion_tag('home/tags/venue_index_item.html', takes_context=True)

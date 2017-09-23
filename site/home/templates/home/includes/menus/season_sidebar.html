@@ -1,0 +1,12 @@
+{% load menu_tags %}
+
+<div class="widget sidebar-widget widget_categories box-style1">
+    {% if menu_heading %}<h3 class="widget-title">{{ menu_heading|safe }}</h3>{% endif %}
+    {% if menu_items %}
+        <ul>
+            {% for item in menu_items %}
+                <li><a href="{{ item.href }}"></i> {{ item.text }}</a></li>            
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>

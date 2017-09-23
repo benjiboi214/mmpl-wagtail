@@ -1,0 +1,45 @@
+{% extends "home/base.html" %}
+
+{% load static %}
+{% load home_tags %}
+{% load wagtailimages_tags %}
+
+{% block content %}
+	{{ block.super }}
+
+	<div class="hero-area">
+		<div class="page-header" style="background-image: url({% static 'img/placehold-index.jpg' %}" )>
+			<div>
+				<div><span>Winter 2017</span></div>
+			</div>
+		</div>
+	</div>
+
+	{% breadcrumbs %}
+
+	<div class="main" role="main">
+		<div id="content" class="content full single-post">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8" id="content-col">
+						<h1 class="post-title">{{ self.title }}</h1>
+						
+						<div class="featured-image">
+							{% image self.media_item.get.link_image original as img %}
+							<img src="{{ img.url }}" />
+						</div>
+						<p>{{ self.description }}</p>
+						<hr>	
+						<div class="post-content">
+							<a class="btn btn-primary  " href="{{ img.url }}" target="_self">Full Size</a>								
+							<a class="btn btn-primary  " href="{{ self.media_item.get.link_document.url }}" target="_self">Download PDF</a>
+						</div>
+						<div class="spacer-20"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
