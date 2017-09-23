@@ -1,4 +1,5 @@
 {% load wagtailcore_tags wagtailimages_tags %}
+{% load home_tags %}
 
 <div class="list-item blog-list-item format-standard">
     <div class="row">
@@ -18,9 +19,9 @@
                           <iframe src="{{ media_item.link_external }}" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                       </div>
                   {% endif %}
-              {% elif media_item.image %}
+              {% elif media_item.link_image %}
                   <div class="post-media">
-                        {% image media_item.image max-600x500 as img %}
+                        {% image media_item.link_image max-600x500 as img %}
                         <a href="{% pageurl blog %}" class="img-thumbnail"><img src="{{ img.url }}" alt="" class="post-thumb"></a>
                   </div>
               {% endif %}
