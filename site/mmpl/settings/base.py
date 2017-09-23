@@ -163,8 +163,6 @@ MEDIA_URL = '/media/'
 WAGTAIL_SITE_NAME = "Melbourne Metropolitan Pool League"
 
 
-# Email Settings
-
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_PORT = 587
