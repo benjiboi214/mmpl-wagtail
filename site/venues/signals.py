@@ -14,15 +14,17 @@ def populate_venue(sender, **kwargs):
     if place:
         venue = VenueDetails.objects.create_venue(instance, place)
 
-        for day in place['opening_hours']['periods']:
-            OpenHours.objects.create_openhours(venue, day)
+        if 'opening_hours' in place:
+            for day in place['opening_hours']['periods']:
+                OpenHours.objects.create_openhours(venue, day)
 
-        label_num = 0
-        for photo in place['photos'][:6]:
-            name = place['place_id'] + str(label_num)
-            label_num += 1
-            label = get_and_write_image(photo['photo_reference'], name)
-            VenueImage.objects.create_venueimage(venue, label)
+        if 'photos' in place:
+            label_num = 0
+            for photo in place['photos'][:6]:
+                name = place['place_id'] + str(label_num)
+                label_num += 1
+                label = get_and_write_image(photo['photo_reference'], name)
+                VenueImage.objects.create_venueimage(venue, label)
 
 
 def remove_image(sender, **kwargs):
