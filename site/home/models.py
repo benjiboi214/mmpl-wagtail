@@ -26,13 +26,15 @@ from modelcluster.fields import ParentalKey
 from wagtailmenus.models import MenuPage
 
 
-# TODO: Split out Link functions
-# # Singular classes for individual uses.
-# # Shared Class to pull logic together for multiple link types.
-# TODO: Create Document Handling Page, utilize above for document link, then display
-# TODO: Create News Handling object, utilize above for page link, then display.
+# Maybe TODO: Implement tagging. Not sure for what reason, might just be a nice way to filter for relevant information
+# TODO: Map the heirachy of the entire site to lock down unnecessary page options when creating.
+# TODO: Double check everything in the remaining pages are still legal and reproducible.
 # TODO: Clean up home page garbage.
-# TODO: Create Menu Handling objects? To pull together
+# TODO: Deploy to staging
+## Start with new Dataset.
+## Scrub Migrations
+## Remove unnecessary static objects
+# TODO: Revisit email notifications for news object posts.
 
 
 # Global Streamfield Definitions
@@ -106,9 +108,9 @@ class LinkFields(models.Model):
     @property
     def link(self):
         if self.link_page:
-            return self.link_page.url
+            return self.link_page
         elif self.link_document:
-            return self.link_document.url
+            return self.link_document
         else:
             return self.link_external
 
@@ -117,6 +119,132 @@ class LinkFields(models.Model):
         FieldPanel('link_external'),
         PageChooserPanel('link_page'),
         DocumentChooserPanel('link_document'),
+    ]
+
+    class Meta:
+        abstract = True
+
+
+class LinkFieldDocument(models.Model):
+    link_document = models.ForeignKey(
+        'wagtaildocs.Document',
+        null=True,
+        blank=True,
+        related_name='+'
+    )
+
+    @property
+    def link(self):
+        return self.link_document
+
+    panels = [
+        FieldPanel('link_text'),
+        DocumentChooserPanel('link_document'),
+    ]
+
+    class Meta:
+        abstract = True
+
+
+class LinkFieldImage(models.Model):
+    link_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        related_name='+'
+    )
+
+    @property
+    def link(self):
+        return self.link_image
+
+    panels = [
+        FieldPanel('link_text'),
+        ImageChooserPanel('link_image'),
+    ]
+
+    class Meta:
+        abstract = True
+
+
+class LinkFieldPage(models.Model):
+    link_page = models.ForeignKey(
+        'wagtailcore.Page',
+        null=True,
+        blank=True,
+        related_name='+'
+    )
+
+    @property
+    def link(self):
+        return self.link_page
+
+    panels = [
+        PageChooserPanel('link_page'),
+    ]
+
+    class Meta:
+        abstract = True
+
+
+class LinkFieldUrl(models.Model):
+    link_external = models.URLField("External link", blank=True)
+
+    @property
+    def link(self):
+        return self.link_external
+
+    panels = [
+        FieldPanel('link_text'),
+        FieldPanel('link_external'),
+    ]
+
+    class Meta:
+        abstract = True
+
+
+# Link Abstract to pull individual links together above.
+class LinkFieldsAll(LinkFieldUrl, LinkFieldPage, LinkFieldDocument, LinkFieldImage):
+    link_text = models.CharField(max_length=40, blank=True)
+
+    @property
+    def link(self):
+        if self.link_page:
+            return self.link_page
+        elif self.link_document:
+            return self.link_document
+        elif self.link_image:
+            return self.link_image
+        else:
+            return self.link_external
+
+    panels = [
+        FieldPanel('link_text'),
+        FieldPanel('link_external'),
+        PageChooserPanel('link_page'),
+        DocumentChooserPanel('link_document'),
+        ImageChooserPanel('link_image')
+    ]
+
+    class Meta:
+        abstract = True
+
+
+# Link Abstract for images and docs
+class LinkFieldsDocsImage(LinkFieldDocument, LinkFieldImage):
+    link_text = models.CharField(max_length=40, blank=True)
+
+    @property
+    def link(self):
+        if self.link_document:
+            return self.link_document
+        else:
+            return self.link_image
+
+    panels = [
+        FieldPanel('link_text'),
+        DocumentChooserPanel('link_document'),
+        ImageChooserPanel('link_image')
     ]
 
     class Meta:
@@ -215,10 +343,10 @@ class BlogPage(Page):
     body = StreamField(HomeStreamBlock())
     date = models.DateField("Post date")
 
-    @property
-    def blog_index(self):
-        # Find closest ancestor which is a blog index
-        return self.get_ancestors().type(BlogIndexPage).last()
+    #@property
+    #def blog_index_image(self):
+    #    # Find closest ancestor which is a blog index
+    #    return self.get_ancestors().type(BlogIndexPage).last().image
 
     @property
     def intro(self):
@@ -257,6 +385,10 @@ class BlogIndexPage(MenuPage):
         on_delete=models.SET_NULL,
         related_name='+'
     )
+
+    subpage_types = [
+        'home.BlogPage',
+    ]
 
     @property
     def blogs(self):
@@ -311,105 +443,6 @@ class AboutPageContactItem(LinkFields, Orderable):
     ]
 
 
-class Competition(models.Model):
-    page = ParentalKey('home.SeasonPage', related_name='competitions')
-    title = models.CharField(
-        max_length=50,
-        verbose_name="Division Name (Tab Display)"
-    )
-    poolstat_url = models.CharField(
-        max_length=255,
-        verbose_name="Poolstat Competition URL (Ladder Link)")
-
-
-    panels = [
-        FieldPanel('title'),
-        FieldPanel('poolstat_url')
-    ]
-
-
-class SeasonPage(Page):
-
-    class Meta:
-        verbose_name = "Season Page"
-
-
-SeasonPage.content_panels = [
-    FieldPanel('title', classname='full title'),
-    InlinePanel(
-        'competitions',
-        label="Competitions"
-    )
-]
-
-
-class VenuePage(Page):
-    '''Venue Page object for adding and displaying venues as a part
-    of the new season centric layout of the website.'''
-    # TODO Link Venue Page as a child of Venue Index
-    # TODO Add help text to admin page to make it obvious what is happening
-
-    blurb = models.CharField(max_length=500, blank=True)
-
-    @property
-    def photos(self):
-        return self.venue_details.photos.all().order_by('-photo')
-
-    @property
-    def photo(self):
-        return self.venue_details.photos.all().order_by('photo')[0]
-
-    @property
-    def open_hours(self):
-        return self.venue_details.openhours.all().order_by('open_day')
-
-    class Meta:
-        verbose_name = "Venue Page"
-
-
-VenuePage.content_panels = [
-    FieldPanel('title', classname='full title'),
-    FieldPanel('blurb'),
-]
-
-
-class VenueIndexPage(Page):
-
-    @property
-    def venues(self):
-        venues = VenuePage.objects.live().child_of(self)
-
-        venues = venues.order_by('title')
-        return venues
-
-    def get_context(self, request):
-        # Get blogs
-        venues = self.venues
-
-        # Pagination
-        page = request.GET.get('page')
-        paginator = Paginator(venues, 20)  # Show 10 blogs per page
-        try:
-            venues = paginator.page(page)
-        except PageNotAnInteger:
-            venues = paginator.page(1)
-        except EmptyPage:
-            venues = paginator.page(paginator.num_pages)
-
-        # Update template context
-        context = super(VenueIndexPage, self).get_context(request)
-        context['paginator'] = venues
-        return context
-
-    class Meta:
-        verbose_name = "Venue Index Page"
-
-
-VenueIndexPage.content_panels = [
-    FieldPanel('title', classname='full title'),
-]
-
-
 class AboutPage(MenuPage):
     image = models.ForeignKey(
         'wagtailimages.Image',
@@ -421,6 +454,12 @@ class AboutPage(MenuPage):
     sub_title = models.CharField(max_length=50, blank=True)
     body = RichTextField(blank=True)
     join_item_title = models.CharField(max_length=25, blank=True)
+
+    subpage_types = [
+        'home.AboutPage',
+        'home.BlogPage',
+        'home.ContactFormPage'
+    ]
 
     @property
     def contact_items(self):
@@ -613,3 +652,164 @@ class Logo(models.Model):
 
     def __unicode__(self):
         return self.description
+
+
+class Competition(models.Model):
+    page = ParentalKey('home.SeasonPage', related_name='competitions')
+    title = models.CharField(
+        max_length=50,
+        verbose_name="Division Name (Tab Display)"
+    )
+    poolstat_url = models.CharField(
+        max_length=255,
+        verbose_name="Poolstat Competition URL (Ladder Link)")
+
+
+    panels = [
+        FieldPanel('title'),
+        FieldPanel('poolstat_url')
+    ]
+
+
+class SeasonPage(Page):
+    subpage_types = [
+        'home.VenueIndexPage',
+        'home.BlogIndexPage',
+        'home.DocumentPage',
+        'home.AboutPage'
+    ]
+
+    def news_index(self):
+        return BlogIndexPage.objects.live().child_of(self).first()
+
+    @property
+    def primary_news(self):
+        return BlogPage.objects.live().child_of(self.news_index()).order_by('latest_revision_created_at').first()
+
+    class Meta:
+        verbose_name = "Season Page"
+
+
+SeasonPage.content_panels = [
+    FieldPanel('title', classname='full title'),
+    InlinePanel(
+        'news_item',
+        label='News',
+        max_num=1
+    ),
+    InlinePanel(
+        'competitions',
+        label="Competitions"
+    ),
+]
+
+
+class VenuePage(Page):
+    '''Venue Page object for adding and displaying venues as a part
+    of the new season centric layout of the website.'''
+    blurb = models.CharField(max_length=500, blank=True)
+
+    @property
+    def photos(self):
+        return self.venue_details.photos.all().order_by('-photo')
+
+    @property
+    def photo(self):
+        return self.venue_details.photos.all().order_by('photo')[0]
+
+    @property
+    def open_hours(self):
+        return self.venue_details.openhours.all().order_by('open_day')
+
+    class Meta:
+        verbose_name = "Venue Page"
+
+
+VenuePage.content_panels = [
+    FieldPanel('title', classname='full title'),
+    FieldPanel('blurb'),
+]
+
+
+class VenueIndexPage(Page):
+    subpage_types = [
+        'home.VenuePage',
+    ]
+
+    @property
+    def venues(self):
+        venues = VenuePage.objects.live().child_of(self)
+
+        venues = venues.order_by('title')
+        return venues
+
+    def get_context(self, request):
+        # Get blogs
+        venues = self.venues
+
+        # Pagination
+        page = request.GET.get('page')
+        paginator = Paginator(venues, 20)  # Show 10 blogs per page
+        try:
+            venues = paginator.page(page)
+        except PageNotAnInteger:
+            venues = paginator.page(1)
+        except EmptyPage:
+            venues = paginator.page(paginator.num_pages)
+
+        # Update template context
+        context = super(VenueIndexPage, self).get_context(request)
+        context['paginator'] = venues
+        return context
+
+    class Meta:
+        verbose_name = "Venue Index Page"
+
+
+VenueIndexPage.content_panels = [
+    FieldPanel('title', classname='full title'),
+]
+
+
+class MediaItem(LinkFieldsDocsImage):
+    page = ParentalKey('home.DocumentPage', related_name='media_item')
+
+
+class NewsItem(LinkFieldPage):
+    page = ParentalKey('home.SeasonPage', related_name='news_item')
+
+    def _check_page_type(self):
+        if self.link_page.content_type.model == 'blogindexpage':
+            return True
+        else:
+            return False
+
+    def primary(self):
+        if self._check_page_type():
+            return BlogPage.objects.live().child_of(self.link_page).order_by('-date')[0:1]
+
+    def secondary(self):
+        if self._check_page_type():
+            return BlogPage.objects.live().child_of(self.link_page).order_by('-date')[1:4] 
+    # if doc page type is blogpageindex
+    # get primary news item
+    # get three secondary news items
+
+
+class DocumentPage(Page):
+    description = models.CharField(
+        max_length=500,
+        blank=True,
+        verbose_name="Description"
+    )
+
+    subpage_types = []
+
+    class Meta:
+        verbose_name = "Document Page"
+
+DocumentPage.content_panels = [
+    FieldPanel('title', classname='full title'),
+    FieldPanel('description', classname='full'),
+    InlinePanel('media_item', label="Document / Image")
+]
