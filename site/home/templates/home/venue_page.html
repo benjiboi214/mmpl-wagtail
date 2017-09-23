@@ -1,0 +1,86 @@
+{% extends "home/base.html" %}
+
+{% load home_tags %}
+{% load static %}
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="hero-area">
+        <div class="page-header" style="background-image: url({% static 'img/placehold-index.jpg' %}")>
+            <div><div><span>Venues</span></div></div>
+        </div>
+    </div>
+
+    {% breadcrumbs %}
+
+    <div class="main" role="main">
+    	<div id="content" class="content full single-post">
+            <div class="container">
+            	<div class="row">
+                    <div class="col-md-8">
+                      	<h1 class="post-title">{{ self.title }}</h1>
+                    	<div class="featured-image"><iframe width="100%" height="400" frameborder="0" style="border:0"
+src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ self.venue_details.place_id }}&key=AIzaSyBzGKZE9oqnDyTNTO-Q65IQDmVCLkGkyXs" allowfullscreen></iframe></div>
+                        <div class="post-content">
+                            <p>{{ self.blurb }}</p>
+                        </div>
+                        <div class="spacer-20"></div>
+                        <div class="tabs exhibition-details">
+                            <ul class="nav nav-tabs">
+                                <li class="active"> <a data-toggle="tab" href="#detailtab"> Details </a> </li>
+                                {% if self.photos %}<li> <a data-toggle="tab" href="#gallerytab"> Gallery </a> </li>{% endif %}
+                            </ul>
+                            <div class="tab-content">
+                                <div id="detailtab" class="tab-pane active">
+
+                                  {% if self.open_hours %}
+                                    <table class="table table-striped">
+                                      <thead>
+                                        <tr>
+                                          <th>Open Hours</th>
+                                          <th>Open</th>
+                                          <th>Close</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for day in self.open_hours %}
+                                        <tr>
+                                          <td>{{ day.get_open_day_display }}</td>
+                                          <td>{{ day.open_time|openhour_time }}</td>
+                                          <td>{{ day.close_time|openhour_time }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                      </tbody>
+                                    </table>
+                                  {% endif %}
+
+
+                                	<ul class="angles">
+                                    	<li>{{ self.venue_details.address }}</li>
+                                    	<li>{{ self.venue_details.phone }}</li>
+                                    </ul>
+                                    <div class="post-actions">
+                                    	<a href="{{ self.venue_details.website }}" class="btn btn-primary">Website</a>
+                                      <a href="{{ self.venue_details.gmaps_url }}" class="btn btn-primary">Google Maps</a>
+                                    </div>
+                                </div>
+
+                                {% if self.photos %}
+                                  <div id="gallerytab" class="tab-pane">
+                                    <ul class="gallery-grider">
+                                        {% for photo in self.photos %}
+                                          <li class="format-image"><a href="{{ photo.photo.url }}" data-rel="prettyPhoto[gallery]" class="media-box"><img src="{{ photo.photo.url }}" alt=""></a></li>
+                                        {% endfor %}
+                                      </ul>
+                                  </div>
+                                {% endif %}
+                           	</div>
+                       	</div>
+                  	</div>
+               	</div>
+           	</div>
+        </div>
+   	</div>
+
+{% endblock %}

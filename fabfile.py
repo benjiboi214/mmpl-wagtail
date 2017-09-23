@@ -56,7 +56,7 @@ def toggle_maintenance():
         if exists('maintenance_on.html'):
             run('mv maintenance_on.html maintenance_off.html')
         elif exists('maintenance_off.html'):
-            run('mv maintenance_off maintenance_on.html')
+            run('mv maintenance_off.html maintenance_on.html')
 
 
 @task
@@ -79,6 +79,13 @@ def restart_webserver():
     require_environment()
     restart_uwsgi()
     restart_nginx()
+
+
+@task
+def git_pull():
+    require_environment()
+    with cd(os.path.join(env.path, 'repo')):
+        sudo('git pull')
 
 
 @task

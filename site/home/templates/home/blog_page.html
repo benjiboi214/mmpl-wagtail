@@ -28,7 +28,7 @@
                         </header>
                         <article class="post-content">
 
-                            {% blog_page_media_item %}
+                            {% include "home/includes/blog_page_media_item.html" %}
 
                             {% if page.body %}
                                 <div class="body-content">
@@ -36,7 +36,7 @@
                                 </div>
                             {% endif %}
 
-                            {% blog_pagination %}
+                            {% include "home/includes/blog_pagination.html" %}
 
                         </article>
                     </div>

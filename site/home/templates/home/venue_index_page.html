@@ -1,0 +1,38 @@
+{% extends "home/base.html" %}
+
+{% load home_tags %}
+{% load static %}
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="hero-area">
+        <div class="page-header" style="background-image: url({% static 'img/placehold-index.jpg' %}")>
+            <div><div><span>Venues</span></div></div>
+        </div>
+    </div>
+
+    {% breadcrumbs %}
+
+    <div class="main" role="main">
+    	<div id="content" class="content full">
+        <div class="container">
+        	<div class="row">
+            <div class="col-md-8">
+              <ul class="events-list">
+
+              	{% for venue in self.venues %}
+                  {% venue_index_item venue=venue %}
+                {% endfor %}
+
+              </ul>
+
+              {% index_pagination %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% load wagtailimages_tags %}
+
+{% with media_item=self.media_item.get %}
+    {% if media_item %}
+        {% if media_item.link_external %}
+            <div class="featured-image">
+                <div class="video-container">
+                    <iframe width="80%" max-width="600" src="{{ media_item.link_external }}"></iframe>
+                </div>
+            </div>
+        {% elif media_item.link_image %}
+            <div class="featured-image">
+                {% image media_item.link_image max-1400x600 as img %}
+                <img src="{{ img.url }}" />
+            </div>
+        {% endif %}
+    {% endif %}
+{% endwith %}

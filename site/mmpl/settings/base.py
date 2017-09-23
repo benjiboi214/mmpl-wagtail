@@ -38,6 +38,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 INSTALLED_APPS = [
     'home',
+    'venues.apps.VenuesConfig',
     'search',
 
     'wagtail.wagtailforms',
@@ -114,6 +115,15 @@ DATABASES = {
     }
 }
 
+# Cache
+# https://docs.djangoproject.com/en/1.11/topics/cache/
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'mmpl_cache',
+    }
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -152,8 +162,6 @@ MEDIA_URL = '/media/'
 
 WAGTAIL_SITE_NAME = "Melbourne Metropolitan Pool League"
 
-
-# Email Settings
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

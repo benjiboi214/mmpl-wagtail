@@ -1,8 +1,10 @@
+import datetime
+
 from django import template
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
-from home.models import Social, Copyright, AboutFooter, Logo, HeroItem, \
+from home.models import Social, Copyright, AboutFooter, Logo, \
     Page, BlogPageMediaItem, AboutPageContactItem
 
 register = template.Library()
@@ -30,45 +32,10 @@ def get_site_root(context):
     return context['request'].site.root_page
 
 
-# Context test and trace set.
-@register.inclusion_tag('home/tags/test_context.html', takes_context=True)
-def test_context(context):
-    self = context.get('self')  # Should be onstance of home page.
-    import pdb; pdb.set_trace()
-    return {
-        'self': self,
-        'request': context['request'],
-    }
-
-
-# Hero area get include title, blurb and hero items
-@register.inclusion_tag('home/tags/hero_area.html', takes_context=True)
-def hero_area(context):
-    self = context.get('self')  # Should be onstance of home page.
-    hero_items = HeroItem.objects.filter(page=self)
-    return {
-        'self': self,
-        'hero_items': hero_items,
-        'request': context['request'],
-    }
-
-
-# Hero item get specific item model.
-@register.inclusion_tag('home/tags/hero_item.html', takes_context=True)
-def hero_item(context, item):
-    self = context.get('self')  # Should be onstance of home page.
-    # import pdb; pdb.set_trace()
-    return {
-        'blog_index': item.link_page.specific,
-        'hero_item': item,
-        'request': context['request'],
-    }
-
-
 # Contact Item populate
 @register.inclusion_tag('home/tags/contact_item.html', takes_context=True)
 def contact_item(context, item):
-    self = context.get('self')  # Should be onstance of home page.
+    self = context.get('self')
     contact_page = item.link_page
     return {
         'contact_page': contact_page,
@@ -85,6 +52,8 @@ def index_image(context):
         blog_index = self
     elif self.content_type.model == 'aboutpage':
         blog_index = self
+    elif self.content_type.model == 'seasonpage':
+        blog_index = self
     else:
         blog_index = self.get_parent().specific
     return {
@@ -93,22 +62,7 @@ def index_image(context):
     }
 
 
-@register.inclusion_tag('home/tags/blog_page_media_item.html', takes_context=True)
-def blog_page_media_item(context):
-    self = context.get('self')
-    #import pdb; pdb.set_trace()
-    try:
-        media_item = BlogPageMediaItem.objects.get(page=self)
-    except BlogPageMediaItem.DoesNotExist:
-        media_item = None
-    return {
-        'media_item': media_item,
-        'request': context['request'],
-    }
-
-
-@register.inclusion_tag('home/tags/blog_index_media_item.html', takes_context=True)
-def blog_index_media_item(context, blog):
+def blog_item(context, blog):
     self = context.get('self')
     try:
         media_item = BlogPageMediaItem.objects.get(page=blog)
@@ -130,6 +84,33 @@ def blog_index_media_item(context, blog):
         'media_item': media_item,
         'supported_sites': supported_sites,
         'request': context['request'],
+    }
+
+
+@register.inclusion_tag('home/tags/blog_index_item.html', takes_context=True)
+def blog_index_item(context, blog):
+    return blog_item(context, blog)
+
+
+@register.inclusion_tag('home/tags/blog_hero_item.html', takes_context=True)
+def blog_hero_item(context, blog):
+    return blog_item(context, blog)
+
+
+@register.inclusion_tag('home/tags/venue_index_item.html', takes_context=True)
+def venue_index_item(context, venue):
+    address = venue.venue_details.address.split(',')
+    short_address = address[0] + ',' + address[1]
+    open_hours = venue.open_hours
+    if len(open_hours) > 1:
+        open_days = str(len(open_hours))
+    else:
+        open_days = False
+    return {
+        'address': short_address,
+        'open_days': open_days,
+        'venue': venue,
+        'request': context['request']
     }
 
 
@@ -163,12 +144,12 @@ def index_pagination(context):
     }
 
 
-@register.inclusion_tag('home/tags/blog_pagination.html', takes_context=True)
-def blog_pagination(context):
-    return {
-        'page': context['page'],
-        'request': context['request']
-    }
+@register.filter
+def openhour_time(value):
+    hour = int(value[:2])
+    minute = int(value[2:])
+    date = datetime.time(hour, minute)
+    return date.strftime("%H:%M")
 
 
 # Social Snippet

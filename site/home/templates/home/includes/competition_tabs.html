@@ -1,0 +1,16 @@
+{% if competitions %}
+  <div class="tabs internships-programs">
+    <ul class="nav nav-tabs">
+      {% for competition in competitions %}
+        <li{% if forloop.first %} class="active"{% endif %}> <a data-toggle="tab" href="#tab{{ forloop.counter }}"> {{ competition.title }} </a> </li>
+      {% endfor %}
+    </ul>
+    <div class="tab-content">
+      {% for competition in competitions %}
+        <div id="tab{{ forloop.counter }}" class="tab-pane {% if forloop.first %}active{% endif %}">
+          <iframe id="poolstat{{ forloop.counter }}" style="width:100%;border:1px" scrolling="no" src="{{ competition.poolstat_url }}/embed"></iframe>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
