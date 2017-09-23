@@ -88,43 +88,7 @@ class HomeStreamBlock(StreamBlock):
     table = TableBlock(template='home/includes/table.html')
 
 
-# Link Abstract
-class LinkFields(models.Model):
-    link_text = models.CharField(max_length=40, blank=True)
-    link_external = models.URLField("External link", blank=True)
-    link_page = models.ForeignKey(
-        'wagtailcore.Page',
-        null=True,
-        blank=True,
-        related_name='+'
-    )
-    link_document = models.ForeignKey(
-        'wagtaildocs.Document',
-        null=True,
-        blank=True,
-        related_name='+'
-    )
-
-    @property
-    def link(self):
-        if self.link_page:
-            return self.link_page
-        elif self.link_document:
-            return self.link_document
-        else:
-            return self.link_external
-
-    panels = [
-        FieldPanel('link_text'),
-        FieldPanel('link_external'),
-        PageChooserPanel('link_page'),
-        DocumentChooserPanel('link_document'),
-    ]
-
-    class Meta:
-        abstract = True
-
-
+# Link Fields Abstracts
 class LinkFieldDocument(models.Model):
     link_document = models.ForeignKey(
         'wagtaildocs.Document',
@@ -138,7 +102,6 @@ class LinkFieldDocument(models.Model):
         return self.link_document
 
     panels = [
-        FieldPanel('link_text'),
         DocumentChooserPanel('link_document'),
     ]
 
@@ -159,7 +122,6 @@ class LinkFieldImage(models.Model):
         return self.link_image
 
     panels = [
-        FieldPanel('link_text'),
         ImageChooserPanel('link_image'),
     ]
 
@@ -195,7 +157,6 @@ class LinkFieldUrl(models.Model):
         return self.link_external
 
     panels = [
-        FieldPanel('link_text'),
         FieldPanel('link_external'),
     ]
 
@@ -204,7 +165,7 @@ class LinkFieldUrl(models.Model):
 
 
 # Link Abstract to pull individual links together above.
-class LinkFieldsAll(LinkFieldUrl, LinkFieldPage, LinkFieldDocument, LinkFieldImage):
+class LinkFields(LinkFieldUrl, LinkFieldPage, LinkFieldDocument, LinkFieldImage):
     link_text = models.CharField(max_length=40, blank=True)
 
     @property
@@ -251,102 +212,34 @@ class LinkFieldsDocsImage(LinkFieldDocument, LinkFieldImage):
         abstract = True
 
 
-# Carousel Abstract
-class CarouselItem(LinkFields):
-    image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
-    title = models.CharField(max_length=25)
-    caption = models.CharField(max_length=255, blank=True)
+# Link Abstract for images and external links
+class LinkFieldsUrlImage(LinkFieldUrl, LinkFieldImage):
+    link_text = models.CharField(max_length=40, blank=True)
+
+    @property
+    def link(self):
+        if self.link_external:
+            return self.link_external
+        else:
+            return self.link_image
 
     panels = [
-        ImageChooserPanel('image'),
-        FieldPanel('title'),
-        FieldPanel('caption'),
-        MultiFieldPanel(LinkFields.panels, "Link"),
+        FieldPanel('link_text'),
+        FieldPanel('link_external'),
+        ImageChooserPanel('link_image')
     ]
 
     class Meta:
         abstract = True
 
 
-# Home Page Classes
-class HeroItem(LinkFields):
-    title = models.CharField(max_length=25, blank=True)
-    page = ParentalKey('home.HomePage', related_name='hero_items')
-    blurb = models.CharField("Blurb", max_length=255, blank=True)
-
-    panels = [
-        FieldPanel('title', classname='full'),
-        FieldPanel('blurb'),
-        MultiFieldPanel(
-            [FieldPanel('link_text'),
-             PageChooserPanel('link_page'),
-             ],
-            "Link"
-        ),
-    ]
-
-
-class HomePageCarouselItem(Orderable, CarouselItem):
-    page = ParentalKey('home.HomePage', related_name='carousel_items')
-
-
-class HomePage(MenuPage):
-    hero_item_title = models.CharField(max_length=25, blank=True)
-    hero_item_blurb = RichTextField(blank=True)
-
-    class Meta:
-        verbose_name = "Homepage"
-
-
-HomePage.content_panels = [
-    FieldPanel('title', classname='full title'),
-    InlinePanel('carousel_items', label="Carousel items"),
-    MultiFieldPanel(
-        [
-            FieldPanel('hero_item_title'),
-            FieldPanel('hero_item_blurb'),
-            InlinePanel(
-                'hero_items',
-                label="Hero Items",
-                max_num=3
-            ),
-        ],
-        heading="Home Page Hero Items",
-        classname="collapsible"
-    ),
-]
-
-
-class BlogPageMediaItem(LinkFields):
+class BlogPageMediaItem(LinkFieldsUrlImage):
     page = ParentalKey('home.BlogPage', related_name='media_item')
-    image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
-
-    panels = [
-        ImageChooserPanel('image'),
-        FieldPanel('link_external')
-    ]
 
 
 class BlogPage(Page):
     body = StreamField(HomeStreamBlock())
     date = models.DateField("Post date")
-
-    #@property
-    #def blog_index_image(self):
-    #    # Find closest ancestor which is a blog index
-    #    return self.get_ancestors().type(BlogIndexPage).last().image
 
     @property
     def intro(self):
@@ -392,19 +285,11 @@ class BlogIndexPage(MenuPage):
 
     @property
     def blogs(self):
-        # Get list of live blog pages that are descendants of this page
-
-        # Selects all descendants of index page, to diaplay on index.
-        # blogs = BlogPage.objects.live().descendant_of(self)
-        # Selects direct descendants of index page.
         blogs = BlogPage.objects.live().child_of(self)
-
-        # Order by most recent date first
         blogs = blogs.order_by('-date')
         return blogs
 
     def get_context(self, request):
-        # Get blogs
         blogs = self.blogs
 
         # Pagination
@@ -417,7 +302,6 @@ class BlogIndexPage(MenuPage):
         except EmptyPage:
             blogs = paginator.page(paginator.num_pages)
 
-        # Update template context
         context = super(BlogIndexPage, self).get_context(request)
         context['paginator'] = blogs
         return context
@@ -431,7 +315,7 @@ class BlogIndexPage(MenuPage):
     ]
 
 
-class AboutPageContactItem(LinkFields, Orderable):
+class AboutPageContactItem(LinkFieldPage, Orderable):
     page = ParentalKey('home.AboutPage', related_name='contact_item')
     intro = models.CharField(max_length=300, blank=True)
     icon = models.CharField(max_length=20, verbose_name="Icon Code (fa)")
@@ -744,12 +628,11 @@ class VenueIndexPage(Page):
         return venues
 
     def get_context(self, request):
-        # Get blogs
         venues = self.venues
 
         # Pagination
         page = request.GET.get('page')
-        paginator = Paginator(venues, 20)  # Show 10 blogs per page
+        paginator = Paginator(venues, 20)
         try:
             venues = paginator.page(page)
         except PageNotAnInteger:
@@ -757,7 +640,6 @@ class VenueIndexPage(Page):
         except EmptyPage:
             venues = paginator.page(paginator.num_pages)
 
-        # Update template context
         context = super(VenueIndexPage, self).get_context(request)
         context['paginator'] = venues
         return context
