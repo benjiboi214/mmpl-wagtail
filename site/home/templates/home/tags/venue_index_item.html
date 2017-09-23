@@ -6,7 +6,7 @@
     <h3><a href="{% pageurl venue %}">{{ venue.title }}</a></h3>
     <div class="meta-data alt">
       <div><a href="{% pageurl venue %}"><i class="fa fa-map-marker"></i> {{ address }}</a></div>
-        <div><i class="fa fa-calendar"></i> {{ open_days }} days</div>
+        {% if open_days %}<div><i class="fa fa-calendar"></i> {{ open_days }} days</div>{% endif %}
     </div>
     <a href="{{ venue.venue_details.gmaps_url }}" class="basic-link">Google Maps</a>
 </li>
