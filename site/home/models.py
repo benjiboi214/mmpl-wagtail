@@ -241,6 +241,11 @@ class BlogPage(Page):
     body = StreamField(HomeStreamBlock())
     date = models.DateField("Post date")
 
+    parent_page_types = [
+        'home.BlogIndexPage',
+        'home.AboutPage'
+    ]
+
     @property
     def intro(self):
         intro = []
@@ -282,6 +287,7 @@ class BlogIndexPage(MenuPage):
     subpage_types = [
         'home.BlogPage',
     ]
+    parent_page_types = ['home.SeasonPage']
 
     @property
     def blogs(self):
@@ -343,6 +349,10 @@ class AboutPage(MenuPage):
         'home.AboutPage',
         'home.BlogPage',
         'home.ContactFormPage'
+    ]
+    parent_page_types = [
+        'home.SeasonPage',
+        'home.AboutPage'
     ]
 
     @property
@@ -421,6 +431,8 @@ class ContactFormPage(AbstractEmailForm):
     thank_you_text = RichTextField(blank=True)
 
     form_builder = CustomFormBuilder
+
+    parent_page_types = ['home.AboutPage']
 
     content_panels = AbstractEmailForm.content_panels + [
         FieldPanel('sub_title', classname="full"),
@@ -556,12 +568,20 @@ class Competition(models.Model):
 
 
 class SeasonPage(Page):
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
     subpage_types = [
         'home.VenueIndexPage',
         'home.BlogIndexPage',
         'home.DocumentPage',
         'home.AboutPage'
     ]
+    parent_page_types = ['wagtailcore.Page']
 
     def news_index(self):
         return BlogIndexPage.objects.live().child_of(self).first()
@@ -576,6 +596,7 @@ class SeasonPage(Page):
 
 SeasonPage.content_panels = [
     FieldPanel('title', classname='full title'),
+    ImageChooserPanel('image'),
     InlinePanel(
         'news_item',
         label='News',
@@ -607,6 +628,8 @@ class VenuePage(Page):
 
     class Meta:
         verbose_name = "Venue Page"
+    
+    parent_page_types = ['home.VenueIndexPage']
 
 
 VenuePage.content_panels = [
@@ -619,6 +642,7 @@ class VenueIndexPage(Page):
     subpage_types = [
         'home.VenuePage',
     ]
+    parent_page_types = ['home.SeasonPage']
 
     @property
     def venues(self):
@@ -686,6 +710,7 @@ class DocumentPage(Page):
     )
 
     subpage_types = []
+    parent_page_types = ['home.SeasonPage']
 
     class Meta:
         verbose_name = "Document Page"
