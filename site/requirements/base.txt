@@ -7,6 +7,7 @@ django-modelcluster==2.0
 django-taggit==0.18.3
 django-treebeard==4.0.1
 djangorestframework==3.5.1
+googlemaps==2.5.1
 html5lib==0.999999999
 isort==4.2.5
 lazy-object-proxy==1.2.2
