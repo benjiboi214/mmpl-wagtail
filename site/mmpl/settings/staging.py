@@ -38,13 +38,13 @@ LOGGING = {
         # Log to a text file that can be rotated by logrotate
         'logfile': {
             'class': 'logging.handlers.WatchedFileHandler',
-            'filename': '/var/log/django/myapp.log'
+            'filename': '/var/log/mmpl/django/mmpl.log'
         },
     },
     'loggers': {
         # Again, default Django configuration to email unhandled exceptions
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['mail_admins', 'logfile'],
             'level': 'ERROR',
             'propagate': True,
         },
@@ -55,7 +55,7 @@ LOGGING = {
             'propagate': False,
         },
         # Your own app - this assumes all your logger names start with "myapp."
-        'myapp': {
+        '': {
             'handlers': ['logfile'],
             'level': 'WARNING', # Or maybe INFO or DEBUG
             'propagate': False
