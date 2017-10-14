@@ -7,11 +7,26 @@ from home.models import VenuePage
 class VenueDetailsManager(models.Manager):
     def create_venue(self, venue_page, place):
         venue, created = self.update_or_create(venue_page=venue_page)
-        venue.place_id = place['place_id']
-        venue.address = place['formatted_address']
-        venue.phone = place['formatted_phone_number']
-        venue.website = place['website']
-        venue.gmaps_url = place['url']
+        try:
+            venue.place_id = place['place_id']
+        except:
+            pass
+        try:
+            venue.address = place['formatted_address']
+        except:
+            pass
+        try:
+            venue.phone = place['formatted_phone_number']
+        except:
+            pass
+        try:
+            venue.website = place['website']
+        except:
+            pass
+        try:
+            venue.gmaps_url = place['url']
+        except:
+            pass
         venue.save()
         return venue
 
