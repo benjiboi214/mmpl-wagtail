@@ -578,7 +578,7 @@ class SeasonPage(Page):
     subpage_types = [
         'home.VenueIndexPage',
         'home.BlogIndexPage',
-        'home.BlogPage'
+        'home.BlogPage',
         'home.DocumentPage',
         'home.AboutPage'
     ]
