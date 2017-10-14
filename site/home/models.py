@@ -242,6 +242,7 @@ class BlogPage(Page):
     date = models.DateField("Post date")
 
     parent_page_types = [
+        'home.SeasonPage',
         'home.BlogIndexPage',
         'home.AboutPage'
     ]
