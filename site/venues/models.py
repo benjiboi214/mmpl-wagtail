@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from home.models import VenuePage
+import random
 
 
 class VenueDetailsManager(models.Manager):
@@ -51,7 +52,8 @@ class OpenHoursManager(models.Manager):
     def create_openhours(self, venue, day):
         try: 
             open_hours_id = (str(day['open']['day']) + day['open']['time'] +
-                            str(day['close']['day']) + day['close']['time'])
+                            str(day['close']['day']) + day['close']['time'] +
+                            random.randint(1,100000))
             open_hours, created = self.update_or_create(
                 uuid=open_hours_id,
                 venue=venue)
@@ -75,7 +77,7 @@ class OpenHours(models.Model):
         ('4', 'Thursday'),
         ('5', 'Friday'),
         ('6', 'Saturday'))
-    uuid = models.CharField(max_length=20)
+    uuid = models.CharField(max_length=20, primary_key=True)
     venue = models.ForeignKey(
         VenueDetails,
         related_name='openhours',
