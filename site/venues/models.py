@@ -49,16 +49,19 @@ class VenueDetails(models.Model):
 
 class OpenHoursManager(models.Manager):
     def create_openhours(self, venue, day):
-        open_hours_id = (str(day['open']['day']) + day['open']['time'] +
-                         str(day['close']['day']) + day['close']['time'])
-        open_hours, created = self.update_or_create(
-            uuid=open_hours_id,
-            venue=venue)
-        open_hours.open_day = day['open']['day']
-        open_hours.open_time = day['open']['time']
-        open_hours.close_day = day['close']['day']
-        open_hours.close_time = day['close']['time']
-        open_hours.save()
+        try: 
+            open_hours_id = (str(day['open']['day']) + day['open']['time'] +
+                            str(day['close']['day']) + day['close']['time'])
+            open_hours, created = self.update_or_create(
+                uuid=open_hours_id,
+                venue=venue)
+            open_hours.open_day = day['open']['day']
+            open_hours.open_time = day['open']['time']
+            open_hours.close_day = day['close']['day']
+            open_hours.close_time = day['close']['time']
+            open_hours.save()
+        except KeyError:
+            pass
 
 
 class OpenHours(models.Model):
