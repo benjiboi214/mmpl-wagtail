@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 from home.models import Social, Copyright, AboutFooter, Logo, \
-    Page, BlogPageMediaItem, AboutPageContactItem
+    Page, BlogPageMediaItem, AboutPageContactItem, MediaItem
 
 register = template.Library()
 
@@ -66,6 +66,10 @@ def blog_item(context, blog):
     self = context.get('self')
     try:
         media_item = BlogPageMediaItem.objects.get(page=blog)
+    except ObjectDoesNotExist:
+        media_item = None
+    try:
+        media_item = MediaItem.objects.get(page=blog)
     except ObjectDoesNotExist:
         media_item = None
     supported_sites = None

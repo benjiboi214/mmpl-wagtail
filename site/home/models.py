@@ -288,6 +288,7 @@ class BlogIndexPage(MenuPage):
     subpage_types = [
         'home.BlogIndexPage',
         'home.BlogPage',
+        'home.DocumentPage'
     ]
     parent_page_types = [
         'home.SeasonPage',
@@ -299,6 +300,12 @@ class BlogIndexPage(MenuPage):
         blogs = BlogPage.objects.live().child_of(self)
         blogs = blogs.order_by('-date')
         return blogs
+
+    @property
+    def documents(self):
+        documents = DocumentPage.objects.live().child_of(self)
+        documents = blogs.order_by('-date')
+        return documents
 
     def get_context(self, request):
         blogs = self.blogs
@@ -716,7 +723,10 @@ class DocumentPage(Page):
     )
 
     subpage_types = []
-    parent_page_types = ['home.SeasonPage']
+    parent_page_types = [
+        'home.SeasonPage',
+        'home.BlogIndexPage'
+    ]
 
     class Meta:
         verbose_name = "Document Page"
