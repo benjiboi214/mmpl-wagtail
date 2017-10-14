@@ -4,6 +4,7 @@ from collections import OrderedDict
 
 from itertools import chain
 from operator import attrgetter
+from datetime import date
 
 from django.db import models
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -242,7 +243,7 @@ class BlogPageMediaItem(LinkFieldsUrlImage):
 
 class BlogPage(Page):
     body = StreamField(HomeStreamBlock())
-    date = models.DateField("Post date")
+    date = models.DateField("Post date", default=date.today)
 
     parent_page_types = [
         'home.SeasonPage',
@@ -727,7 +728,7 @@ class DocumentPage(Page):
         blank=True,
         verbose_name="Description"
     )
-    date = models.DateField("Post date")
+    date = models.DateField("Post date", default=date.today)
 
     subpage_types = []
     parent_page_types = [
