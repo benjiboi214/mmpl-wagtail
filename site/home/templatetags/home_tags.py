@@ -67,14 +67,14 @@ def blog_item(context, blog):
     try:
         media_item = BlogPageMediaItem.objects.get(page=blog)
     except:
-        media_item = None
-    try:
-        media_item = MediaItem.objects.get(page=blog)
-    except:
-        media_item = None
+        try:
+            media_item = MediaItem.objects.get(page=blog)
+        except:
+            media_item = None
+    
     supported_sites = None
     if media_item:
-        if media_item.link_external:
+        try:
             url_split = media_item.link_external.split('.')
             supported_sites = []
             if 'youtube' in url_split:
@@ -83,6 +83,8 @@ def blog_item(context, blog):
                 supported_sites.append('soundcloud')
             elif 'vimeo' in url_split:
                 supported_sites.append('vimeo')
+        except AttributeError:
+            pass
     return {
         'blog': blog,
         'media_item': media_item,
