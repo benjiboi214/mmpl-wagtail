@@ -288,6 +288,7 @@ class BlogIndexPage(MenuPage):
         on_delete=models.SET_NULL,
         related_name='+'
     )
+    date = models.DateField("Post date", default=date.today)
 
     subpage_types = [
         'home.BlogIndexPage',
@@ -306,14 +307,20 @@ class BlogIndexPage(MenuPage):
         return blogs
 
     @property
+    def indexes(self):
+        indexes = BlogIndexPage.objects.live().child_of(self)
+        indexes = indexes.order_by('-date')
+        return indexes
+
+    @property
     def documents(self):
         documents = DocumentPage.objects.live().child_of(self)
         documents = documents.order_by('-date')
         return documents
 
-    def get_context(self, request):
+    def get_context(self, request):   
         results = sorted(
-            chain(self.blogs, self.documents),
+            chain(self.blogs, self.documents, self.indexes),
             key=attrgetter('date')
         )
 
