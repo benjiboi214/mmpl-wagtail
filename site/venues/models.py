@@ -75,7 +75,7 @@ class OpenHours(models.Model):
         ('4', 'Thursday'),
         ('5', 'Friday'),
         ('6', 'Saturday'))
-    uuid = models.CharField(max_length=20, primary_key=True)
+    uuid = models.CharField(max_length=20)
     venue = models.ForeignKey(
         VenueDetails,
         related_name='openhours',
