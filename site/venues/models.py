@@ -53,7 +53,7 @@ class OpenHoursManager(models.Manager):
         try: 
             open_hours_id = (str(day['open']['day']) + day['open']['time'] +
                             str(day['close']['day']) + day['close']['time'] +
-                            random.randint(1,100000))
+                            str(random.randint(1,100000)))
             open_hours, created = self.update_or_create(
                 uuid=open_hours_id,
                 venue=venue)
