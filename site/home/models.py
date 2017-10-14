@@ -727,6 +727,7 @@ class DocumentPage(Page):
         blank=True,
         verbose_name="Description"
     )
+    date = models.DateField("Post date")
 
     subpage_types = []
     parent_page_types = [
@@ -739,6 +740,7 @@ class DocumentPage(Page):
 
 DocumentPage.content_panels = [
     FieldPanel('title', classname='full title'),
+    FieldPanel('date'),
     FieldPanel('description', classname='full'),
     InlinePanel('media_item', label="Document / Image")
 ]
