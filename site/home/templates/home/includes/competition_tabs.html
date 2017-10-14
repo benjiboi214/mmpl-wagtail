@@ -1,7 +1,7 @@
 {% if competitions %}
   <div class="tabs internships-programs">
     <ul class="nav nav-tabs">
-      {% for competition in competitions %}
+      {% for competition in competitions reversed %}
         <li{% if forloop.first %} class="active"{% endif %}> <a data-toggle="tab" href="#tab{{ forloop.counter }}"> {{ competition.title }} </a> </li>
       {% endfor %}
     </ul>
