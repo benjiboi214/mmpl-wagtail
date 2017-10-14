@@ -66,11 +66,11 @@ def blog_item(context, blog):
     self = context.get('self')
     try:
         media_item = BlogPageMediaItem.objects.get(page=blog)
-    except ObjectDoesNotExist:
+    except:
         media_item = None
     try:
         media_item = MediaItem.objects.get(page=blog)
-    except ObjectDoesNotExist:
+    except:
         media_item = None
     supported_sites = None
     if media_item:
