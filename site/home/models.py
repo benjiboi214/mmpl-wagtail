@@ -2,6 +2,9 @@ from __future__ import absolute_import, unicode_literals
 
 from collections import OrderedDict
 
+from itertools import chain
+from operator import attrgetter
+
 from django.db import models
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django import forms
@@ -308,11 +311,14 @@ class BlogIndexPage(MenuPage):
         return documents
 
     def get_context(self, request):
-        blogs = self.blogs
+        results = sorted(
+            chain(self.blogs, self.documents),
+            key=attrgetter('date')
+        )
 
         # Pagination
         page = request.GET.get('page')
-        paginator = Paginator(blogs, 10)  # Show 10 blogs per page
+        paginator = Paginator(results, 10)  # Show 10 blogs per page
         try:
             blogs = paginator.page(page)
         except PageNotAnInteger:
