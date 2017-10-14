@@ -307,7 +307,7 @@ class BlogIndexPage(MenuPage):
     @property
     def documents(self):
         documents = DocumentPage.objects.live().child_of(self)
-        documents = blogs.order_by('-date')
+        documents = documents.order_by('-date')
         return documents
 
     def get_context(self, request):
