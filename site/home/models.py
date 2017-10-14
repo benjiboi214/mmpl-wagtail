@@ -286,9 +286,13 @@ class BlogIndexPage(MenuPage):
     )
 
     subpage_types = [
+        'home.BlogIndexPage',
         'home.BlogPage',
     ]
-    parent_page_types = ['home.SeasonPage']
+    parent_page_types = [
+        'home.SeasonPage',
+        'home.BlogIndexPage',
+    ]
 
     @property
     def blogs(self):
