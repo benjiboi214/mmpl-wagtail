@@ -6,7 +6,7 @@
       {% endfor %}
     </ul>
     <div class="tab-content">
-      {% for competition in competitions %}
+      {% for competition in competitions reversed %}
         <div id="tab{{ forloop.counter }}" class="tab-pane {% if forloop.first %}active{% endif %}">
           <iframe id="poolstat{{ forloop.counter }}" style="width:100%;border:1px" scrolling="no" src="{{ competition.poolstat_url }}/embed"></iframe>
         </div>
